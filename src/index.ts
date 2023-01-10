@@ -2,6 +2,13 @@
 
 import * as shapeObjects from "./shape_object/";
 
+
+/*
+
+import * styles from './index.scss';
+
+
+console.log(styles['#canvas']) */
 /* const btn = {
     left: <HTMLButtonElement> document.getElementById("left")!,
     right: <HTMLButtonElement> document.getElementById("right")!,
@@ -336,3 +343,4 @@ target.addEventListener("touchstart", (evt) => {
         y: pageY
     }) 
 })
+
