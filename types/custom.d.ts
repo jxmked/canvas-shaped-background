@@ -3,6 +3,11 @@ interface XYCoordinate {
     y: number;
 }
 
+interface VelocityProperties {
+    x: number;
+    y: number;
+}
+
 interface ShapeAttributes {
     /**
      * Size of the object
@@ -46,13 +51,7 @@ interface ShapeAttributes {
      * Movement speed of X axis of an object
      * */
     
-    transitionSpeedX: number;
-    
-    /**
-     * Movement spped of Y axis of an Object
-     * */
-    transitionSpeedY: number;
-    
+    velocity: VelocityProperties;
     /**
      * Rotation angle of an object
      * */

@@ -36,12 +36,11 @@ define("shape_object/shape", ["require", "exports"], function (require, exports)
         context;
         position;
         rotationSpeed;
-        transitionSpeedX;
-        transitionSpeedY;
         isClockwise;
         isOverride;
+        velocity;
         static countShape = 0;
-        constructor(context, { size, color, angle, thick, style, position, rotationSpeed, transitionSpeedX, transitionSpeedY, isClockwise, isOverride }) {
+        constructor(context, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity }) {
             ++Shape.countShape;
             if (angle > 360 && angle < 0)
                 throw new Error("Invalid angle");
@@ -53,10 +52,9 @@ define("shape_object/shape", ["require", "exports"], function (require, exports)
             this.position = position;
             this.context = context;
             this.rotationSpeed = rotationSpeed;
-            this.transitionSpeedX = transitionSpeedX;
-            this.transitionSpeedY = transitionSpeedY;
             this.isClockwise = isClockwise;
             this.isOverride = (isOverride === void 0) ? false : isOverride;
+            this.velocity = velocity;
         }
         applyStyle() {
             if (this.style === "stroke") {
@@ -335,8 +333,10 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
             style: getRandomItem(ParticlesAttribute.styles),
             position: { x, y },
             rotationSpeed: getRandomInRange(ParticlesAttribute.rotationSpeedRange[0], ParticlesAttribute.rotationSpeedRange[1]),
-            transitionSpeedX: getRandomInRange(ParticlesAttribute.transitionSpeedXRange[0], ParticlesAttribute.transitionSpeedXRange[1]),
-            transitionSpeedY: getRandomInRange(ParticlesAttribute.transitionSpeedYRange[0], ParticlesAttribute.transitionSpeedYRange[1]),
+            velocity: {
+                x: getRandomInRange(ParticlesAttribute.transitionSpeedXRange[0], ParticlesAttribute.transitionSpeedXRange[1]),
+                y: getRandomInRange(ParticlesAttribute.transitionSpeedXRange[0], ParticlesAttribute.transitionSpeedXRange[1])
+            },
             isClockwise: getRandomItem([true, false])
         };
         if (returnValue)
@@ -351,8 +351,8 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
         Particles.forEach((shape) => {
             let { x, y } = shape.position;
             let angle = Math.abs(shape.angle);
-            let moveX = shape.transitionSpeedX;
-            let moveY = shape.transitionSpeedY;
+            let moveX = shape.velocity.x;
+            let moveY = shape.velocity.y;
             angle += shape.rotationSpeed;
             if (angle < 0)
                 shape.angle = 360 - angle;
@@ -383,8 +383,8 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
                     x: moveX,
                     y: moveY
                 });
-            shape.transitionSpeedX = moveX;
-            shape.transitionSpeedY = moveY;
+            shape.velocity.x = moveX;
+            shape.velocity.y = moveY;
             shape.rotate(shape.isClockwise ? -angle : angle);
             shape.draw();
         });

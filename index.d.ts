@@ -8,12 +8,11 @@ declare module "shape_object/shape" {
         context: CanvasRenderingContext2D;
         position: ShapeAttributes['position'];
         rotationSpeed: ShapeAttributes['rotationSpeed'];
-        transitionSpeedX: ShapeAttributes['transitionSpeedX'];
-        transitionSpeedY: ShapeAttributes['transitionSpeedY'];
         isClockwise: ShapeAttributes['isClockwise'];
         isOverride: ShapeAttributes['isOverride'];
+        velocity: ShapeAttributes['velocity'];
         static countShape: number;
-        constructor(context: CanvasRenderingContext2D, { size, color, angle, thick, style, position, rotationSpeed, transitionSpeedX, transitionSpeedY, isClockwise, isOverride }: ShapeAttributes);
+        constructor(context: CanvasRenderingContext2D, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity }: ShapeAttributes);
         applyStyle(): void;
         getAnglePoint(size: number, angle: ShapeAttributes['angle']): XYCoordinate;
         move({ x, y }: XYCoordinate): void;

@@ -88,15 +88,16 @@ const addShape = ({x, y}:XYCoordinate, returnValue?:boolean) => {
             ParticlesAttribute.rotationSpeedRange[1]
         ),
         
-        transitionSpeedX: getRandomInRange(
-            ParticlesAttribute.transitionSpeedXRange[0],
-            ParticlesAttribute.transitionSpeedXRange[1]
-        ),
-        
-        transitionSpeedY: getRandomInRange(
-            ParticlesAttribute.transitionSpeedYRange[0],
-            ParticlesAttribute.transitionSpeedYRange[1]
-        ),
+        velocity: {
+            x: getRandomInRange(
+                ParticlesAttribute.transitionSpeedXRange[0],
+                ParticlesAttribute.transitionSpeedXRange[1]
+            ),
+            y: getRandomInRange(
+                ParticlesAttribute.transitionSpeedXRange[0],
+                ParticlesAttribute.transitionSpeedXRange[1]
+            )
+        },
         
         isClockwise: getRandomItem([true, false])
     }
@@ -119,8 +120,8 @@ function start() {
         // get coord
         let { x, y } = shape.position
         let angle = Math.abs(shape.angle)
-        let moveX = shape.transitionSpeedX
-        let moveY = shape.transitionSpeedY
+        let moveX = shape.velocity.x
+        let moveY = shape.velocity.y
         
         angle += shape.rotationSpeed
         
@@ -160,8 +161,8 @@ function start() {
             })
         
         // Update shape Transitions
-        shape.transitionSpeedX = moveX
-        shape.transitionSpeedY = moveY
+        shape.velocity.x = moveX
+        shape.velocity.y = moveY
         
         shape.rotate(shape.isClockwise ? -angle : angle)
         
