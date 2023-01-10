@@ -10,15 +10,13 @@ class Hexagon extends Shape implements ShapeProperties {
         return "hexagon";
     }
     
-    public draw():void {
-        const ratio = 45 + this.angle;
-
-        const pa = this.getAnglePoint(this.size, 0 + ratio);
-        const pb = this.getAnglePoint(this.size, 60 + ratio);
-        const pc = this.getAnglePoint(this.size, 120 + ratio);
-        const pd = this.getAnglePoint(this.size, 180 + ratio);
-        const pe = this.getAnglePoint(this.size, 240 + ratio);
-        const pf = this.getAnglePoint(this.size, 300 + ratio);
+    public draw(doMore?:DoMoreProperties):void {
+        const pa = this.getAnglePoint(this.size, 0 + this.angle);
+        const pb = this.getAnglePoint(this.size, 60 + this.angle);
+        const pc = this.getAnglePoint(this.size, 120 + this.angle);
+        const pd = this.getAnglePoint(this.size, 180 + this.angle);
+        const pe = this.getAnglePoint(this.size, 240 + this.angle);
+        const pf = this.getAnglePoint(this.size, 300 + this.angle);
         
         this.context.beginPath();
         this.context.moveTo(pa.x, pa.y);
@@ -27,7 +25,9 @@ class Hexagon extends Shape implements ShapeProperties {
         this.context.lineTo(pd.x, pd.y);
         this.context.lineTo(pe.x, pe.y);
         this.context.lineTo(pf.x, pf.y);
-
+        
+        (doMore||function(){})(this.context);
+        
         this.context.closePath();
         
         this.applyStyle()

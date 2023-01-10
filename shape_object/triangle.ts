@@ -10,17 +10,17 @@ class Triangle extends Shape implements ShapeProperties {
         return "triangle";
     }
     
-    public draw():void {
-        const ratio = 30 + this.angle;
-        
-        const pa = this.getAnglePoint(this.size, 0 + ratio);
-        const pb = this.getAnglePoint(this.size, 120 + ratio);
-        const pc = this.getAnglePoint(this.size, 240 + ratio);
+    public draw(doMore?:DoMoreProperties):void {
+        const pa = this.getAnglePoint(this.size, 0 + this.angle);
+        const pb = this.getAnglePoint(this.size, 120 + this.angle);
+        const pc = this.getAnglePoint(this.size, 240 + this.angle);
         
         this.context.beginPath();
         this.context.moveTo(pa.x, pa.y);
         this.context.lineTo(pb.x, pb.y);
         this.context.lineTo(pc.x, pc.y);
+        
+        (doMore||function(){})(this.context);
         
         this.context.closePath();
         

@@ -95,7 +95,4 @@ class Shape implements ShapeAttributes {
 
 }
 
-
-
-
 export default Shape;

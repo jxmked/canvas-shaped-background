@@ -15,17 +15,21 @@ import * as shapeObjects from "./shape_object/index"
 
 
 const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
+const overlayedCanvas = <HTMLCanvasElement> document.getElementById("overlayed-canvas")!
+
 const ctx = canvas.getContext('2d')!
+const octx = overlayedCanvas.getContext('2d')! 
+
 let width:number;
 let height:number;
 const Particles:ShapeProperties[]= [];
 const ParticlesAttribute:ParticlesAttributeProps = {
     count: 5,
     colors: [
-        "rgb(74, 176, 152, 0.5)",
-        "rgb(234, 94, 93, 0.5)",
-        "rgb(248, 186, 63, 0.5)",
-        "rgb(63, 130, 243, 0.5)"
+        "rgb(74, 176, 152, 0.5)", // Green
+        "rgb(234, 94, 93, 0.5)", // Red
+        "rgb(248, 186, 63, 0.5)", // Yellow
+        "rgb(63, 130, 243, 0.5)" // Blue
     ],
     sizeRange: [60, 100],
     rotationSpeedRange: [1, 7],
@@ -108,7 +112,7 @@ const addShape = ({x, y}:XYCoordinate, returnValue?:boolean) => {
 function start() {
     
     clrscr()
-    
+    octx.clearRect(0, 0, width, height)
     bgColor("rgb(26, 43, 51, 1.0)")
     
     Particles.forEach((shape) => {
@@ -177,6 +181,9 @@ window.addEventListener("resize", () => {
     width = canvas.width;
     height = canvas.height;
     
+    overlayedCanvas.width = width;
+    overlayedCanvas.height = height;
+    
     isInitialized = true;
     
 })
@@ -229,7 +236,6 @@ const mouseEvent:MouseEventProps = {
     shapeIndex: -1
 }
 
-
 const target = document.body;
 
 const eventMove = ({x, y}:XYCoordinate) => {
@@ -263,11 +269,11 @@ const eventDown = ({x, y}:XYCoordinate) => {
     }
     
     shapeAttr.size = 50; //getRandomInRange(12, 17)
-    shapeAttr.rotationSpeed = 5;
+    shapeAttr.rotationSpeed = 8;
     shapeAttr.thick = 40
     shapeAttr.style = "fill"
     
-    Particles[mouseEvent.shapeIndex] = new shape(ctx, shapeAttr)
+    Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr)
     let color = Particles[mouseEvent.shapeIndex].color;
     color = color.replace("0.5", "1.0")
     Particles[mouseEvent.shapeIndex].color = color

@@ -12,14 +12,12 @@ class Cross extends Shape implements ShapeProperties {
         return "cross";
     }
     
-    public draw():void {
-        const ratio = this.angle;
-        
+    public draw(doMore?:DoMoreProperties):void {
         // Close Center
-        const closeBottomRight = this.getAnglePoint(this.size, 45 + ratio);
-        const closeBottomLeft = this.getAnglePoint(this.size, 135 + ratio);
-        const closeTopLeft = this.getAnglePoint(this.size, 225 + ratio);
-        const closeTopRight = this.getAnglePoint(this.size, 315 + ratio);
+        const closeBottomRight = this.getAnglePoint(this.size, 45 + this.angle);
+        const closeBottomLeft = this.getAnglePoint(this.size, 135 + this.angle);
+        const closeTopLeft = this.getAnglePoint(this.size, 225 + this.angle);
+        const closeTopRight = this.getAnglePoint(this.size, 315 + this.angle);
         
         this.context.beginPath()
         
@@ -33,7 +31,11 @@ class Cross extends Shape implements ShapeProperties {
         this.context.lineTo(closeTopRight.x, closeTopRight.y)
         
         // To make sure that the cursor will stay at the center
-        this.context.moveTo(this.position.x, this.position.y)
+        this.context.moveTo(this.position.x, this.position.y);
+        
+        (doMore||function(){})(this.context);
+        
+        
         this.context.closePath()
         
         this.applyStyle()

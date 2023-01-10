@@ -101,15 +101,15 @@ define("shape_object/triangle", ["require", "exports", "shape_object/shape"], fu
         get type() {
             return "triangle";
         }
-        draw() {
-            const ratio = 30 + this.angle;
-            const pa = this.getAnglePoint(this.size, 0 + ratio);
-            const pb = this.getAnglePoint(this.size, 120 + ratio);
-            const pc = this.getAnglePoint(this.size, 240 + ratio);
+        draw(doMore) {
+            const pa = this.getAnglePoint(this.size, 0 + this.angle);
+            const pb = this.getAnglePoint(this.size, 120 + this.angle);
+            const pc = this.getAnglePoint(this.size, 240 + this.angle);
             this.context.beginPath();
             this.context.moveTo(pa.x, pa.y);
             this.context.lineTo(pb.x, pb.y);
             this.context.lineTo(pc.x, pc.y);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -127,17 +127,17 @@ define("shape_object/square", ["require", "exports", "shape_object/shape"], func
         get type() {
             return "square";
         }
-        draw() {
-            const ratio = 45 + this.angle;
-            const pa = this.getAnglePoint(this.size, 0 + ratio);
-            const pb = this.getAnglePoint(this.size, 90 + ratio);
-            const pc = this.getAnglePoint(this.size, 180 + ratio);
-            const pd = this.getAnglePoint(this.size, 270 + ratio);
+        draw(doMore) {
+            const pa = this.getAnglePoint(this.size, 0 + this.angle);
+            const pb = this.getAnglePoint(this.size, 90 + this.angle);
+            const pc = this.getAnglePoint(this.size, 180 + this.angle);
+            const pd = this.getAnglePoint(this.size, 270 + this.angle);
             this.context.beginPath();
             this.context.moveTo(pa.x, pa.y);
             this.context.lineTo(pb.x, pb.y);
             this.context.lineTo(pc.x, pc.y);
             this.context.lineTo(pd.x, pd.y);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -155,10 +155,11 @@ define("shape_object/circle", ["require", "exports", "shape_object/shape"], func
         get type() {
             return "circle";
         }
-        draw() {
+        draw(doMore) {
             const { x, y } = this.position;
             this.context.beginPath();
             this.context.arc(x, y, this.size, 0, 2 * Math.PI);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -176,14 +177,13 @@ define("shape_object/hexagon", ["require", "exports", "shape_object/shape"], fun
         get type() {
             return "hexagon";
         }
-        draw() {
-            const ratio = 45 + this.angle;
-            const pa = this.getAnglePoint(this.size, 0 + ratio);
-            const pb = this.getAnglePoint(this.size, 60 + ratio);
-            const pc = this.getAnglePoint(this.size, 120 + ratio);
-            const pd = this.getAnglePoint(this.size, 180 + ratio);
-            const pe = this.getAnglePoint(this.size, 240 + ratio);
-            const pf = this.getAnglePoint(this.size, 300 + ratio);
+        draw(doMore) {
+            const pa = this.getAnglePoint(this.size, 0 + this.angle);
+            const pb = this.getAnglePoint(this.size, 60 + this.angle);
+            const pc = this.getAnglePoint(this.size, 120 + this.angle);
+            const pd = this.getAnglePoint(this.size, 180 + this.angle);
+            const pe = this.getAnglePoint(this.size, 240 + this.angle);
+            const pf = this.getAnglePoint(this.size, 300 + this.angle);
             this.context.beginPath();
             this.context.moveTo(pa.x, pa.y);
             this.context.lineTo(pb.x, pb.y);
@@ -191,6 +191,7 @@ define("shape_object/hexagon", ["require", "exports", "shape_object/shape"], fun
             this.context.lineTo(pd.x, pd.y);
             this.context.lineTo(pe.x, pe.y);
             this.context.lineTo(pf.x, pf.y);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -208,16 +209,15 @@ define("shape_object/octagon", ["require", "exports", "shape_object/shape"], fun
         get type() {
             return "octagon";
         }
-        draw() {
-            const ratio = 45 + this.angle;
-            const pa = this.getAnglePoint(this.size, 0 + ratio);
-            const pb = this.getAnglePoint(this.size, 45 + ratio);
-            const pc = this.getAnglePoint(this.size, 90 + ratio);
-            const pd = this.getAnglePoint(this.size, 135 + ratio);
-            const pe = this.getAnglePoint(this.size, 180 + ratio);
-            const pf = this.getAnglePoint(this.size, 225 + ratio);
-            const pg = this.getAnglePoint(this.size, 270 + ratio);
-            const ph = this.getAnglePoint(this.size, 315 + ratio);
+        draw(doMore) {
+            const pa = this.getAnglePoint(this.size, 0 + this.angle);
+            const pb = this.getAnglePoint(this.size, 45 + this.angle);
+            const pc = this.getAnglePoint(this.size, 90 + this.angle);
+            const pd = this.getAnglePoint(this.size, 135 + this.angle);
+            const pe = this.getAnglePoint(this.size, 180 + this.angle);
+            const pf = this.getAnglePoint(this.size, 225 + this.angle);
+            const pg = this.getAnglePoint(this.size, 270 + this.angle);
+            const ph = this.getAnglePoint(this.size, 315 + this.angle);
             this.context.beginPath();
             this.context.moveTo(pa.x, pa.y);
             this.context.lineTo(pb.x, pb.y);
@@ -227,6 +227,7 @@ define("shape_object/octagon", ["require", "exports", "shape_object/shape"], fun
             this.context.lineTo(pf.x, pf.y);
             this.context.lineTo(pg.x, pg.y);
             this.context.lineTo(ph.x, ph.y);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -245,12 +246,11 @@ define("shape_object/cross", ["require", "exports", "shape_object/shape"], funct
         get type() {
             return "cross";
         }
-        draw() {
-            const ratio = this.angle;
-            const closeBottomRight = this.getAnglePoint(this.size, 45 + ratio);
-            const closeBottomLeft = this.getAnglePoint(this.size, 135 + ratio);
-            const closeTopLeft = this.getAnglePoint(this.size, 225 + ratio);
-            const closeTopRight = this.getAnglePoint(this.size, 315 + ratio);
+        draw(doMore) {
+            const closeBottomRight = this.getAnglePoint(this.size, 45 + this.angle);
+            const closeBottomLeft = this.getAnglePoint(this.size, 135 + this.angle);
+            const closeTopLeft = this.getAnglePoint(this.size, 225 + this.angle);
+            const closeTopRight = this.getAnglePoint(this.size, 315 + this.angle);
             this.context.beginPath();
             this.context.moveTo(this.position.x, this.position.y);
             this.context.lineTo(closeBottomRight.x, closeBottomRight.y);
@@ -261,6 +261,7 @@ define("shape_object/cross", ["require", "exports", "shape_object/shape"], funct
             this.context.moveTo(this.position.x, this.position.y);
             this.context.lineTo(closeTopRight.x, closeTopRight.y);
             this.context.moveTo(this.position.x, this.position.y);
+            (doMore || function () { })(this.context);
             this.context.closePath();
             this.applyStyle();
         }
@@ -287,7 +288,9 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
     Object.defineProperty(exports, "__esModule", { value: true });
     shapeObjects = __importStar(shapeObjects);
     const canvas = document.getElementById("canvas");
+    const overlayedCanvas = document.getElementById("overlayed-canvas");
     const ctx = canvas.getContext('2d');
+    const octx = overlayedCanvas.getContext('2d');
     let width;
     let height;
     const Particles = [];
@@ -343,6 +346,7 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
     };
     function start() {
         clrscr();
+        octx.clearRect(0, 0, width, height);
         bgColor("rgb(26, 43, 51, 1.0)");
         Particles.forEach((shape) => {
             let { x, y } = shape.position;
@@ -393,6 +397,8 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
         canvas.height = window.innerHeight * 2;
         width = canvas.width;
         height = canvas.height;
+        overlayedCanvas.width = width;
+        overlayedCanvas.height = height;
         isInitialized = true;
     });
     window.dispatchEvent(new Event("resize"));
@@ -439,10 +445,10 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
             isOverride: true
         };
         shapeAttr.size = 50;
-        shapeAttr.rotationSpeed = 5;
+        shapeAttr.rotationSpeed = 8;
         shapeAttr.thick = 40;
         shapeAttr.style = "fill";
-        Particles[mouseEvent.shapeIndex] = new shape(ctx, shapeAttr);
+        Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr);
         let color = Particles[mouseEvent.shapeIndex].color;
         color = color.replace("0.5", "1.0");
         Particles[mouseEvent.shapeIndex].color = color;

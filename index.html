@@ -17,13 +17,15 @@
         height: 100%;
         z-index: -10;
     }
-    #canvas-container {
+    #canvas-container,
+    #overlayed-canvas {
         width: 100vw;
         height: 100vh;
         padding: 0;
         margin: 0;
         position: fixed;
         z-index: -10;
+        
     }
     #up {
         grid-area: bu;
@@ -79,7 +81,7 @@
         width: 100vw;
         height: 100vh;
         position: fixed;
-        display: none;
+      //  display: none;
     }
     </style>
     <script src="./require.js" data-main="index" type="text/javascript"></script>
@@ -100,6 +102,9 @@
         <canvas id="canvas"></canvas>
     </div>
 
-    <div id="backdrop"></div>
+    <div id="backdrop">
+        <canvas id="overlayed-canvas"></canvas>
+    </div>
+    
 </body>
 </html>
