@@ -12,7 +12,8 @@ declare module "shape_object/shape" {
         isOverride: ShapeAttributes['isOverride'];
         velocity: ShapeAttributes['velocity'];
         static countShape: number;
-        constructor(context: CanvasRenderingContext2D, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity }: ShapeAttributes);
+        data: ShapeAttributes['data'];
+        constructor(context: CanvasRenderingContext2D, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity, data }: ShapeAttributes);
         applyStyle(): void;
         getAnglePoint(size: number, angle: ShapeAttributes['angle']): XYCoordinate;
         move({ x, y }: XYCoordinate): void;

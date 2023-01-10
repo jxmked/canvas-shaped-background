@@ -40,7 +40,8 @@ define("shape_object/shape", ["require", "exports"], function (require, exports)
         isOverride;
         velocity;
         static countShape = 0;
-        constructor(context, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity }) {
+        data;
+        constructor(context, { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity, data }) {
             ++Shape.countShape;
             if (angle > 360 && angle < 0)
                 throw new Error("Invalid angle");
@@ -55,6 +56,7 @@ define("shape_object/shape", ["require", "exports"], function (require, exports)
             this.isClockwise = isClockwise;
             this.isOverride = (isOverride === void 0) ? false : isOverride;
             this.velocity = velocity;
+            this.data = data;
         }
         applyStyle() {
             if (this.style === "stroke") {

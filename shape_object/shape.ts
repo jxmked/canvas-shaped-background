@@ -12,7 +12,8 @@ class Shape implements ShapeAttributes {
     public isClockwise:ShapeAttributes['isClockwise'];
     public isOverride:ShapeAttributes['isOverride'];
     public velocity:ShapeAttributes['velocity']
-    static countShape:number = 0
+    static countShape:number = 0;
+    public data:ShapeAttributes['data'];
     constructor(
         context:CanvasRenderingContext2D, 
         {
@@ -25,7 +26,8 @@ class Shape implements ShapeAttributes {
             rotationSpeed,
             isClockwise,
             isOverride,
-            velocity
+            velocity,
+            data
     }:ShapeAttributes) {
         
         ++Shape.countShape
@@ -44,7 +46,8 @@ class Shape implements ShapeAttributes {
         this.rotationSpeed = rotationSpeed;
         this.isClockwise = isClockwise
         this.isOverride = (isOverride === void 0) ? false : isOverride
-        this.velocity = velocity
+        this.velocity = velocity;
+        this.data = data;
     }
     
     public applyStyle() {

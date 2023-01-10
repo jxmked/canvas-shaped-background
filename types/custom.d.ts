@@ -48,10 +48,10 @@ interface ShapeAttributes {
     rotationSpeed: number;
     
     /**
-     * Movement speed of X axis of an object
+     * Movement speed of X and y axis of an object
      * */
-    
     velocity: VelocityProperties;
+    
     /**
      * Rotation angle of an object
      * */
@@ -63,6 +63,11 @@ interface ShapeAttributes {
      * Useful if the shape was in other events
      * */
     isOverride?:boolean
+    
+    /**
+     * For Self Defined Properties
+     * */
+    data?:object
 }
 
 /**
