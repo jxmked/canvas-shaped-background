@@ -22,6 +22,7 @@
   },
   "homepage": "https://jxmked.github.io/canvas-shaped-background/",
   "devDependencies": {
+    "@types/gtag.js": "^0.0.12",
     "browser-sync": "^2.27.11",
     "browser-sync-webpack-plugin": "^2.3.0",
     "css-loader": "^6.7.3",

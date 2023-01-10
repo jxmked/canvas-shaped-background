@@ -1,4 +1,9 @@
 import './styles/index.css';
+import gtagPageview from './utils/gtag';
+
+// Page Viewed
+gtagPageview(window.location.href.toString());
+
 import * as shapeObjects from "./shape_object/";
 
 const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
