@@ -72,6 +72,7 @@ interface ShapeAttributes {
 type DoMoreProperties = (ctx:CanvasRenderingContext2D) => void;
 
 interface ShapeProperties extends ShapeAttributes {
+    
     /**
      * Return shape type/what kind of shape
      * */

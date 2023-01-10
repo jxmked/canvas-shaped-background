@@ -297,10 +297,10 @@ define("index", ["require", "exports", "shape_object/index"], function (require,
     const ParticlesAttribute = {
         count: 5,
         colors: [
-            "rgb(74, 176, 152, 0.5)",
-            "rgb(234, 94, 93, 0.5)",
-            "rgb(248, 186, 63, 0.5)",
-            "rgb(63, 130, 243, 0.5)"
+            "rgb(74, 176, 152, 1)",
+            "rgb(234, 94, 93, 1)",
+            "rgb(248, 186, 63, 1)",
+            "rgb(63, 130, 243, 1)"
         ],
         sizeRange: [60, 100],
         rotationSpeedRange: [1, 7],

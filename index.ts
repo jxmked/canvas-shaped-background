@@ -26,10 +26,10 @@ const Particles:ShapeProperties[]= [];
 const ParticlesAttribute:ParticlesAttributeProps = {
     count: 5,
     colors: [
-        "rgb(74, 176, 152, 0.5)", // Green
-        "rgb(234, 94, 93, 0.5)", // Red
-        "rgb(248, 186, 63, 0.5)", // Yellow
-        "rgb(63, 130, 243, 0.5)" // Blue
+        "rgb(74, 176, 152, 1)", // Green
+        "rgb(234, 94, 93, 1)", // Red
+        "rgb(248, 186, 63, 1)", // Yellow
+        "rgb(63, 130, 243, 1)" // Blue
     ],
     sizeRange: [60, 100],
     rotationSpeedRange: [1, 7],
