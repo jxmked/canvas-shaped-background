@@ -6,6 +6,7 @@
 // https://github.com/vercel/next.js/discussions/20784#discussioncomment-4101864
 type WindowWithDataLayer = Window & {
   dataLayer: Record<string, any>[];
+  gtag: () => void;
 };
 
 declare const window: WindowWithDataLayer;
@@ -36,7 +37,7 @@ function onClickEvent(element:HTMLElement) {
     document.getElementsByTagName('head')[0].appendChild(scr);
 
     window.dataLayer = window.dataLayer || [];
-    gtag = gtag || function() {
+    gtag = window.gtag || function() {
         window.dataLayer.push(arguments);
     };
 
