@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/jxmked/canvas-shaped-background/issues"
   },
-  "homepage": "https://github.com/jxmked/canvas-shaped-background#readme",
+  "homepage": "https://jxmked.github.io/canvas-shaped-background/",
   "devDependencies": {
     "browser-sync": "^2.27.11",
     "browser-sync-webpack-plugin": "^2.3.0",
