@@ -4,15 +4,30 @@ import * as shapeObjects from "./shape_object/";
 const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
 const overlayedCanvas = <HTMLCanvasElement> document.getElementById("overlayed-canvas")!
 
+
+/**
+ * We can use CanvasRenderingContext2D.shadowBlur
+ * but it has a drawback when it comes to performance.
+ * 
+ * So, to achieve blurry canvas is by layering HTMLelements
+ * and adjusting it into css
+ * 
+ * */
 const ctx = canvas.getContext('2d')!
+
+/**
+ * This second context allow us to have a sharp shapes.
+ * This canvas handles mouse events
+ * */
 const octx = overlayedCanvas.getContext('2d')! 
 
 let width:number;
 let height:number;
+
 const Particles:ShapeProperties[]= [];
 const ParticlesAttribute:ParticlesAttributeProps = {
-    count: 10,
-    colors: [
+    count: 20, // Shape count
+    colors: [ // Color for shapes
         "rgb(74, 176, 152, 1)", // Green
         "rgb(234, 94, 93, 1)", // Red
         "rgb(248, 186, 63, 1)", // Yellow
@@ -21,7 +36,7 @@ const ParticlesAttribute:ParticlesAttributeProps = {
     sizeRange: [60, 100],
     rotationSpeedRange: [1, 7],
     thickRange: [20, 50],
-    styles: ["stroke", "fill"],
+    styles: ["stroke", "fill"], // Keep this
     transitionSpeedYRange: [1, 8],
     transitionSpeedXRange: [-5, 5]
 }
@@ -34,7 +49,8 @@ const bgColor = (value:string) => {
 }
 
 const clrscr = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    octx.clearRect(0, 0, width, height)
+    ctx.clearRect(0, 0, width, height)
 }
 
 const flipper = (num: number) => {
@@ -102,7 +118,7 @@ const addShape = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeAttributes|und
 function start() {
     
     clrscr()
-    octx.clearRect(0, 0, width, height)
+    
     bgColor("rgb(26, 43, 51, 1.0)")
     
     Particles.forEach((shape) => {
@@ -122,6 +138,11 @@ function start() {
             shape.angle = angle - 360 
         
         // Checking if we hit the boundaries
+        // On hit...
+        // Decrease/Increase velocities
+        // Change rotation angle
+        
+        //  Width boundaries
         if (x <= 0) {
             moveX = (Math.abs(moveX) + flipper(2))
             x = 0
@@ -133,6 +154,7 @@ function start() {
             shape.isClockwise = getRandomItem([true, false])
         }
         
+        // height boundaries
         if (y <= 0) {
             y = 0
             moveY = (Math.abs(moveY) + flipper(2))
@@ -143,13 +165,16 @@ function start() {
             shape.isClockwise = getRandomItem([true, false])
         }
         
+        /**
+         * We handled the movement of shape when it is overrided
+         * */
         if(! shape.isOverride)
             shape.move({
                 x: moveX,
                 y: moveY
             })
         
-        // Update shape Transitions
+        // Update shape velocities
         shape.velocity.x = moveX
         shape.velocity.y = moveY
         
@@ -158,6 +183,7 @@ function start() {
         shape.draw()
         
     })
+    
     window.requestAnimationFrame(start)
 }
 
@@ -184,7 +210,6 @@ window.requestAnimationFrame(start)
 /**
  * Lets add some intro
  * */
-
 let ival = window.setInterval(() => {
     if (! isInitialized) return
     cshape++;
@@ -196,7 +221,7 @@ let ival = window.setInterval(() => {
         y:canvas.height
     })
     
-}, 0)
+}, 100)
 
 /**
  * Allow User to Add Object On Specified Area 
@@ -257,16 +282,21 @@ const eventDown = ({x, y}:XYCoordinate) => {
         isOverride:true
     }
     
-    shapeAttr.size = 50; //getRandomInRange(12, 17)
+    shapeAttr.size = 50;
     shapeAttr.rotationSpeed = 8;
     shapeAttr.thick = 40
     shapeAttr.style = "fill"
     
+    /**
+     * Insert Shape into overlayed canvas so its not blurred
+     * */
     Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr)
+    
+    
     let color = Particles[mouseEvent.shapeIndex].color;
+    
     color = color.replace("0.5", "1.0")
     Particles[mouseEvent.shapeIndex].color = color
-   
 }
 
 const eventUp = ({x, y}:XYCoordinate) => {
@@ -274,7 +304,7 @@ const eventUp = ({x, y}:XYCoordinate) => {
     eventMove({x, y})
     
     try {
-        Particles[mouseEvent.shapeIndex].size = 20// getRandomInRange(40, 70)
+        Particles[mouseEvent.shapeIndex].size = 20
     } catch(TypeError) {}
     
     setTimeout(() => {
