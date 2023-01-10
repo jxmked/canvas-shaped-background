@@ -11,6 +11,7 @@ type WindowWithDataLayer = Window & {
 
 declare const window: WindowWithDataLayer;
 
+window.dataLayer = window.dataLayer || [];
 
 function onClickEvent(element:HTMLElement) {
     let url = element.getAttribute("href");
@@ -36,7 +37,6 @@ function onClickEvent(element:HTMLElement) {
 
     document.getElementsByTagName('head')[0].appendChild(scr);
 
-    window.dataLayer = window.dataLayer || [];
     gtag = window.gtag || function() {
         window.dataLayer.push(arguments);
     };
