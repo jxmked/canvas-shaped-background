@@ -37,7 +37,7 @@ function onClickEvent(element:HTMLElement) {
 
     document.getElementsByTagName('head')[0].appendChild(scr);
 
-    gtag = window.gtag || function() {
+    window.gtag = window.gtag || function() {
         window.dataLayer.push(arguments);
     };
 
