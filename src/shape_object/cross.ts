@@ -1,4 +1,4 @@
-import Shape from 'shape'
+import Shape from './shape'
 
 class Cross extends Shape implements ShapeProperties {
     

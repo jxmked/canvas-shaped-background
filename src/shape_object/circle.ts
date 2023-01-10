@@ -1,4 +1,4 @@
-import Shape from 'shape'
+import Shape from './shape'
 
 class Circle extends Shape implements ShapeProperties {
 

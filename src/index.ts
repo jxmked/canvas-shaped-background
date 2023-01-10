@@ -1,6 +1,6 @@
 
 
-import * as shapeObjects from "./shape_object/index"
+import * as shapeObjects from "./shape_object/";
 
 /* const btn = {
     left: <HTMLButtonElement> document.getElementById("left")!,
@@ -12,8 +12,6 @@ import * as shapeObjects from "./shape_object/index"
     downLeft: <HTMLButtonElement> document.getElementById("down-left")!,
     downRight: <HTMLButtonElement> document.getElementById("down-right")!
 } */
-
-
 const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
 const overlayedCanvas = <HTMLCanvasElement> document.getElementById("overlayed-canvas")!
 
@@ -62,7 +60,7 @@ const getRandomItem = <T>(arr:T[]): T => {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
-const addShape = ({x, y}:XYCoordinate, returnValue?:boolean) => {
+const addShape = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeAttributes|undefined => {
     
     const attr:ShapeAttributes = {
         size: getRandomInRange(
@@ -108,6 +106,8 @@ const addShape = ({x, y}:XYCoordinate, returnValue?:boolean) => {
     const shape = getRandomItem(shapeArray)
     
     Particles.push(new shape(ctx, attr))
+    
+    return;
 }
 
 function start() {
@@ -198,7 +198,7 @@ window.requestAnimationFrame(start)
 
 let ival = window.setInterval(() => {
     if (! isInitialized) return
-    
+    cshape++;
     if(ParticlesAttribute.count <= cshape)
         clearInterval(ival)
         
@@ -206,7 +206,6 @@ let ival = window.setInterval(() => {
         x:getRandomInRange(20, canvas.width - 20), 
         y:canvas.height
     })
-    cshape++;
     
 }, 100)
 
