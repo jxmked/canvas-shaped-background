@@ -4,107 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
     <title></title>
-    <style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
-    
-    #canvas {
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -10;
-    }
-    #canvas-container,
-    #overlayed-canvas {
-        width: 100vw;
-        height: 100vh;
-        padding: 0;
-        margin: 0;
-        position: fixed;
-        z-index: -10;
-        
-    }
-    #up {
-        grid-area: bu;
-    }
-    
-    #down {
-        grid-area: bd;
-    }
-    
-    #left {
-        grid-area: bl;
-    }
-    
-    #right {
-        grid-area: br;
-    }
-    #up-left {
-        grid-area: bul;
-    }
-    #up-right {
-        grid-area: bur;
-    }
-    #down-left {
-        grid-area: bdl;
-    }
-    #down-right {
-        grid-area: bdr;
-    }
-    
-    #buttons  {
-        position: absolute;
-        bottom: 100px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 70%;
-        height: 100px;
-        
-        display: grid;
-        
-        grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: minmax(50px, auto);
-        grid-template-areas: 
-            "bul bu bur"
-            "bl . br"
-            "bdl bd bdr";
-        gap: 5px;
-        display: none;
-    }
-    #backdrop {
-        z-index: 5555;
-        background-color: rgba(44,44,46,0.6);
-        backdrop-filter: blur(8px);
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-      //  display: none;
-    }
-    </style>
-    <script src="index.js" type="text/javascript" defer></script>
 </head>
 <body>
-    
-    <div id="buttons">
-        <button id="up">Up</button>
-        <button id="down">Down</button>
-        <button id="up-left">Up-Left</button>
-        <button id="up-right">Up-Right</button>
-        <button id="left">Left</button>
-        <button id="right">Right</button>
-        <button id="down-left">Down-Left</button>
-        <button id="down-right">Down-Right</button>
-    </div>
     <div id="canvas-container">
         <canvas id="canvas"></canvas>
     </div>
-
     <div id="backdrop">
         <canvas id="overlayed-canvas"></canvas>
     </div>
-    
 </body>
 </html>

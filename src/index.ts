@@ -1,17 +1,6 @@
-
-
+import './styles/index.css';
 import * as shapeObjects from "./shape_object/";
 
-/* const btn = {
-    left: <HTMLButtonElement> document.getElementById("left")!,
-    right: <HTMLButtonElement> document.getElementById("right")!,
-    up: <HTMLButtonElement> document.getElementById("up")!,
-    down: <HTMLButtonElement> document.getElementById("down")!,
-    upLeft: <HTMLButtonElement> document.getElementById("up-left")!,
-    upRight: <HTMLButtonElement> document.getElementById("up-right")!,
-    downLeft: <HTMLButtonElement> document.getElementById("down-left")!,
-    downRight: <HTMLButtonElement> document.getElementById("down-right")!
-} */
 const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
 const overlayedCanvas = <HTMLCanvasElement> document.getElementById("overlayed-canvas")!
 
@@ -22,7 +11,7 @@ let width:number;
 let height:number;
 const Particles:ShapeProperties[]= [];
 const ParticlesAttribute:ParticlesAttributeProps = {
-    count: 5,
+    count: 10,
     colors: [
         "rgb(74, 176, 152, 1)", // Green
         "rgb(234, 94, 93, 1)", // Red
@@ -207,7 +196,7 @@ let ival = window.setInterval(() => {
         y:canvas.height
     })
     
-}, 100)
+}, 0)
 
 /**
  * Allow User to Add Object On Specified Area 
@@ -336,3 +325,4 @@ target.addEventListener("touchstart", (evt) => {
         y: pageY
     }) 
 })
+
