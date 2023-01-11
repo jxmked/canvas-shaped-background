@@ -62,7 +62,9 @@ module.exports = function(env, config) {
                     baseDir: ['dist']
                 },
                 files: ['./dist/*'],
-                notify: false
+                notify: false,
+                ui: false,
+                open:false
             }),
                 
             new HtmlWebpackPlugin({

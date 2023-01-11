@@ -1,8 +1,8 @@
 import Shape from './shape'
 
-class Cross extends Shape implements ShapeProperties {
+class Cross extends ShapeObject {
     
-    constructor(context:CanvasRenderingContext2D, attr:ShapeAttributes) {
+    constructor(context:Shape2DContext, attr:ShapeProperties) {
         super(context, attr)
         // We can't have different styling for this
         this.style = "stroke"
@@ -12,7 +12,7 @@ class Cross extends Shape implements ShapeProperties {
         return "cross";
     }
     
-    public draw(doMore?:DoMoreProperties):void {
+    public draw():void {
         // Close Center
         const closeBottomRight = this.getAnglePoint(this.size, 45 + this.angle);
         const closeBottomLeft = this.getAnglePoint(this.size, 135 + this.angle);
@@ -32,8 +32,6 @@ class Cross extends Shape implements ShapeProperties {
         
         // To make sure that the cursor will stay at the center
         this.context.moveTo(this.position.x, this.position.y);
-        
-        (doMore ?? function(){ return void 0})(this.context);
         
         this.context.closePath()
         

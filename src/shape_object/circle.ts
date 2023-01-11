@@ -1,8 +1,8 @@
 import Shape from './shape'
 
-class Circle extends Shape implements ShapeProperties {
+class Circle extends ShapeObject {
 
-    constructor(context:CanvasRenderingContext2D, attr:ShapeAttributes) {
+    constructor(context:Shape2DContext, attr:ShapeProperties) {
         super(context, attr)
     }
     
@@ -10,15 +10,12 @@ class Circle extends Shape implements ShapeProperties {
         return "circle";
     }
     
-    public draw(doMore?:DoMoreProperties):void {
+    public draw():void {
         const { x, y } = this.position;
         
         this.context.beginPath();
         
         this.context.arc(x, y, this.size, 0, 2 * Math.PI);
-        
-        (doMore ?? function(){ return void 0})(this.context);
-        
         this.context.closePath();
         
         this.applyStyle()

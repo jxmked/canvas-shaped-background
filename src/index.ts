@@ -1,14 +1,12 @@
 import './styles/index.css';
 import gtagPageview from './utils/gtag';
+import shapeArray from "./shape_object/index";
 
 // Page Viewed
 gtagPageview(window.location.href.toString());
 
-import * as shapeObjects from "./shape_object/";
-
-const canvas = document.getElementById("canvas")! as HTMLCanvasElement;
-const overlayedCanvas = document.getElementById("overlayed-canvas")! as HTMLCanvasElement;
-
+const canvas:HTMLCanvasElement = document.getElementById("canvas")! as HTMLCanvasElement;
+const overlayedCanvas:HTMLCanvasElement = document.getElementById("overlayed-canvas")! as HTMLCanvasElement;
 
 /**
  * We can use CanvasRenderingContext2D.shadowBlur
@@ -18,20 +16,20 @@ const overlayedCanvas = document.getElementById("overlayed-canvas")! as HTMLCanv
  * and adjusting it into css
  * 
  * */
-const ctx = canvas.getContext('2d')!
+const ctx:CanvasRenderingContext2D = canvas.getContext('2d')!
 
 /**
  * This second context allow us to have a sharp shapes.
  * This canvas handles mouse events
  * */
-const octx = overlayedCanvas.getContext('2d')! 
+const octx :CanvasRenderingContext2D = overlayedCanvas.getContext('2d')! 
 
 let width:number;
 let height:number;
 
-const Particles:ShapeProperties[]= [];
+const Particles:ShapeObject[] = [];
 const ParticlesAttribute:ParticlesAttributeProps = {
-    count: 20, // Shape count
+    count: 10, // Shape count
     colors: [ // Color for shapes
         "rgb(74, 176, 152, 1)", // Green
         "rgb(234, 94, 93, 1)", // Red
@@ -46,33 +44,31 @@ const ParticlesAttribute:ParticlesAttributeProps = {
     transitionSpeedXRange: [-5, 5]
 }
 
-const shapeArray = Object.values(shapeObjects)
-
-const bgColor = (value:string) => {
+const bgColor:Function = (value:string): void => {
     ctx.fillStyle = value
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
-const clrscr = () => {
+const clrscr:Function = (): void => {
     octx.clearRect(0, 0, width, height)
     ctx.clearRect(0, 0, width, height)
 }
 
-const flipper = (num: number): number => {
+const flipper:Function = (num: number): number => {
     return Math.floor(((Math.random() * 2) * num) - num);
 }
 
-const getRandomInRange = (mn:number, mx:number): number => {
+const getRandomInRange:Function = (mn:number, mx:number): number => {
     return Math.floor(Math.random() * (mx - mn)) + mn
 }
 
-const getRandomItem = <T>(arr:T[]): T => {
+const getRandomItem:Function = <T>(arr:T[]): T => {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
-const addShape = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeAttributes|undefined => {
+const addShape:Function = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeProperties|undefined => {
     
-    const attr:ShapeAttributes = {
+    const attr:ShapeProperties = {
         size: getRandomInRange(
             ParticlesAttribute.sizeRange[0],
             ParticlesAttribute.sizeRange[1]
@@ -113,7 +109,7 @@ const addShape = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeAttributes|und
     if(returnValue)
         return attr
         
-    const shape = getRandomItem(shapeArray)
+    const shape:ShapeObject = getRandomItem(shapeArray)
     
     Particles.push(new shape(ctx, attr))
     
@@ -279,7 +275,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
     
     const shape = getRandomItem(shapeArray)
     
-    const shapeAttr:ShapeAttributes = {
+    const shapeAttr:ShapeProperties = {
         ...addShape({
                 x:mouseEvent.x,
                 y:mouseEvent.y

@@ -1,8 +1,8 @@
 import Shape from './shape'
 
-class Triangle extends Shape implements ShapeProperties {
+class Triangle extends ShapeObject {
     
-    constructor(context:CanvasRenderingContext2D, attr:ShapeAttributes) {
+    constructor(context:Shape2DContext, attr:ShapeProperties) {    
         super(context, attr)
     }
     
@@ -10,20 +10,8 @@ class Triangle extends Shape implements ShapeProperties {
         return "triangle";
     }
     
-    public draw(doMore?:DoMoreProperties):void {
-        const pa:XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
-        const pb:XYCoordinate = this.getAnglePoint(this.size, 120 + this.angle);
-        const pc:XYCoordinate = this.getAnglePoint(this.size, 240 + this.angle);
-        
-        this.context.beginPath();
-        this.context.moveTo(pa.x, pa.y);
-        this.context.lineTo(pb.x, pb.y);
-        this.context.lineTo(pc.x, pc.y);
-        
-        (doMore ?? function(){ return void 0})(this.context);
-        
-        this.context.closePath();
-        
+    public draw():void {
+        this.createCircularShape(3)
         this.applyStyle()
     }
 }

@@ -1,35 +1,35 @@
 
-class Shape implements ShapeAttributes {
+class Shape {
     
-    public size:ShapeAttributes['size'];
-    public color:ShapeAttributes['color'];
-    public angle:ShapeAttributes['angle'];
-    public thick:ShapeAttributes['thick'];
-    public style:ShapeAttributes['style'];
-    public context:CanvasRenderingContext2D;
-    public position:ShapeAttributes['position'];
-    public rotationSpeed:ShapeAttributes['rotationSpeed']
-    public isClockwise:ShapeAttributes['isClockwise'];
-    public isOverride:ShapeAttributes['isOverride'];
-    public velocity:ShapeAttributes['velocity']
+    public size:ShapeProperties['size'];
+    public color:ShapeProperties['color'];
+    public angle:ShapeProperties['angle'];
+    public thick:ShapeProperties['thick'];
+    public style:ShapeProperties['style'];
+    public context:Shape2DContext;
+    public position:ShapeProperties['position'];
+    public rotationSpeed:ShapeProperties['rotationSpeed']
+    public isClockwise:ShapeProperties['isClockwise'];
+    public isOverride:ShapeProperties['isOverride'];
+    public velocity:ShapeProperties['velocity']
     public static countShape = 0;
-    public data:ShapeAttributes['data'];
+    public data:ShapeProperties['data'];
     
     constructor(
-        context:CanvasRenderingContext2D, 
-        {
-            size,
-            color,
+        context:Shape2DContext, attr:ShapeProperties) {
+        const {
+            size, 
+            color, 
             angle,
-            thick,
-            style,
+            thick, 
+            style, 
             position,
-            rotationSpeed,
+            rotationSpeed, 
             isClockwise,
-            isOverride,
-            velocity,
+            isOverride, 
+            velocity, 
             data
-    }:ShapeAttributes) {
+        } = attr;
         
         ++Shape.countShape
         
@@ -63,16 +63,35 @@ class Shape implements ShapeAttributes {
         this.context.fill()
     }
     
-    public getAnglePoint(size:number, angle:ShapeAttributes['angle']): XYCoordinate {
+    public getAnglePoint(size:number, angle:ShapeProperties['angle']): XYCoordinate {
         /**
          * Get coordinates to a given distance from center point
          * */
         const { x, y } = this.position;
-        const rad = angle * (Math.PI / 180);
+        const rad:number = angle * (Math.PI / 180);
         return { 
             x: x + (size * Math.cos(rad)),
             y: y + (size * Math.sin(rad))
         };
+    }
+    
+    /**
+     * Create Circular shape base on end points
+     * 
+     * */
+    public createCircularShape(endPointsCount:number): void {
+        const numOfSections: number = 360 / endPointsCount;
+        const midpoint:XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
+        
+        this.context.beginPath()
+        this.context.moveTo(midpoint.x, midpoint.y);
+        
+        for(let deg = numOfSections; deg <= (360 - numOfSections); deg += numOfSections) {
+            const endpoint:XYCoordinate = this.getAnglePoint(this.size, deg + this.angle);
+            this.context.lineTo(endpoint.x, endpoint.y);
+        }
+        
+        this.context.closePath();
     }
     
     /**
@@ -90,7 +109,7 @@ class Shape implements ShapeAttributes {
         this.position = {x, y}
     }
     
-    public rotate(angle:ShapeAttributes['angle']): void {
+    public rotate(angle:ShapeProperties['angle']): void {
         this.angle = angle
     }
 
