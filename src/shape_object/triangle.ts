@@ -6,21 +6,21 @@ class Triangle extends Shape implements ShapeProperties {
         super(context, attr)
     }
     
-    public get type():string {
+    get type(): string {
         return "triangle";
     }
     
     public draw(doMore?:DoMoreProperties):void {
-        const pa = this.getAnglePoint(this.size, 0 + this.angle);
-        const pb = this.getAnglePoint(this.size, 120 + this.angle);
-        const pc = this.getAnglePoint(this.size, 240 + this.angle);
+        const pa:XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
+        const pb:XYCoordinate = this.getAnglePoint(this.size, 120 + this.angle);
+        const pc:XYCoordinate = this.getAnglePoint(this.size, 240 + this.angle);
         
         this.context.beginPath();
         this.context.moveTo(pa.x, pa.y);
         this.context.lineTo(pb.x, pb.y);
         this.context.lineTo(pc.x, pc.y);
         
-        (doMore||function(){})(this.context);
+        (doMore ?? function(){ return void 0})(this.context);
         
         this.context.closePath();
         

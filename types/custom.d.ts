@@ -112,8 +112,8 @@ interface ParticlesAttributeProps {
     rotationSpeedRange: ShapeProperties['rotationSpeed'][]
     thickRange: ShapeProperties["thick"][]
     styles: ShapeProperties['style'][]
-    transitionSpeedYRange: ShapeProperties['transitionSpeedY'][]
-    transitionSpeedXRange: ShapeProperties['transitionSpeedX'][]
+    transitionSpeedYRange: ShapeProperties['velocity']['y'][]
+    transitionSpeedXRange: ShapeProperties['velocity']['x'][]
 }
 
 interface MouseEventProps {

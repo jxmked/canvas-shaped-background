@@ -12,15 +12,16 @@ class Shape implements ShapeAttributes {
     public isClockwise:ShapeAttributes['isClockwise'];
     public isOverride:ShapeAttributes['isOverride'];
     public velocity:ShapeAttributes['velocity']
-    static countShape:number = 0;
+    public static countShape = 0;
     public data:ShapeAttributes['data'];
+    
     constructor(
         context:CanvasRenderingContext2D, 
         {
             size,
-            color, 
-            angle, 
-            thick, 
+            color,
+            angle,
+            thick,
             style,
             position,
             rotationSpeed,
@@ -50,15 +51,16 @@ class Shape implements ShapeAttributes {
         this.data = data;
     }
     
-    public applyStyle() {
+    public applyStyle():void {
         if(this.style === "stroke") {
             this.context.strokeStyle = this.color;
             this.context.lineWidth = this.thick;
             this.context.stroke()
-        } else if (this.style === "fill") {
-            this.context.fillStyle = this.color;
-            this.context.fill()
+            return;
         }
+        
+        this.context.fillStyle = this.color;
+        this.context.fill()
     }
     
     public getAnglePoint(size:number, angle:ShapeAttributes['angle']): XYCoordinate {

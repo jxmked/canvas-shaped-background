@@ -5,17 +5,18 @@
  
 // https://github.com/vercel/next.js/discussions/20784#discussioncomment-4101864
 type WindowWithDataLayer = Window & {
-  dataLayer: Record<string, any>[];
-  gtag: () => void;
+  dataLayer: object[];
+  gtag: (...args:WindowWithDataLayer['dataLayer']) => void;
 };
 
 declare const window: WindowWithDataLayer;
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 window.dataLayer = window.dataLayer || [];
 
 function onClickEvent(element:HTMLElement) {
-    let url = element.getAttribute("href");
-    let text = element.innerText;
+    const url = element.getAttribute("href");
+    const text = element.innerText;
 
     element.addEventListener("click", function() {
         gtag("event", "url_clicked", {
@@ -37,15 +38,18 @@ function onClickEvent(element:HTMLElement) {
 
     document.getElementsByTagName('head')[0].appendChild(scr);
 
-    window.gtag = window.gtag || function() {
-        window.dataLayer.push(arguments);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    window.gtag = window.gtag || function(...args:WindowWithDataLayer['dataLayer']){
+        window.dataLayer.push(...args);
     };
 
     gtag('js', new Date());
     gtag('config', id);
     
-    document.addEventListener("DOMContentLoaded", function() {
-        Array.prototype.forEach.call(document.getElementsByClassName("gtag-on-click"), function(element) {
+    document.addEventListener("DOMContentLoaded", () => {
+        Array.prototype.forEach.call(
+            document.getElementsByClassName("gtag-on-click") as HTMLCollectionOf<HTMLElement>, 
+                (element:HTMLElement) => {
             onClickEvent(element);
         });
     });

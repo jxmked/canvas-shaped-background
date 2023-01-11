@@ -22,7 +22,7 @@ class Square extends Shape implements ShapeProperties {
         this.context.lineTo(pc.x, pc.y);
         this.context.lineTo(pd.x, pd.y);
         
-        (doMore||function(){})(this.context);
+        (doMore ?? function(){ return void 0})(this.context);
         
         this.context.closePath();
         

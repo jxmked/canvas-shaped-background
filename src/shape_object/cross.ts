@@ -33,8 +33,7 @@ class Cross extends Shape implements ShapeProperties {
         // To make sure that the cursor will stay at the center
         this.context.moveTo(this.position.x, this.position.y);
         
-        (doMore||function(){})(this.context);
-        
+        (doMore ?? function(){ return void 0})(this.context);
         
         this.context.closePath()
         

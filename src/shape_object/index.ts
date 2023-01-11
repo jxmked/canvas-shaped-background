@@ -9,7 +9,7 @@ export {
     Triangle,
     Square,
     Circle,
-   // Hexagon,
+    Hexagon,
     Octagon,
     Cross
 }

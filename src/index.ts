@@ -6,8 +6,8 @@ gtagPageview(window.location.href.toString());
 
 import * as shapeObjects from "./shape_object/";
 
-const canvas = <HTMLCanvasElement> document.getElementById("canvas")!;
-const overlayedCanvas = <HTMLCanvasElement> document.getElementById("overlayed-canvas")!
+const canvas = document.getElementById("canvas")! as HTMLCanvasElement;
+const overlayedCanvas = document.getElementById("overlayed-canvas")! as HTMLCanvasElement;
 
 
 /**
@@ -58,11 +58,11 @@ const clrscr = () => {
     ctx.clearRect(0, 0, width, height)
 }
 
-const flipper = (num: number) => {
+const flipper = (num: number): number => {
     return Math.floor(((Math.random() * 2) * num) - num);
 }
 
-const getRandomInRange = (mn:number, mx:number) => {
+const getRandomInRange = (mn:number, mx:number): number => {
     return Math.floor(Math.random() * (mx - mn)) + mn
 }
 
@@ -192,7 +192,7 @@ function start() {
     window.requestAnimationFrame(start)
 }
 
-let isInitialized:boolean = false;
+let isInitialized = false;
 let cshape = 0;
 
 window.addEventListener("resize", () => {
@@ -215,7 +215,7 @@ window.requestAnimationFrame(start)
 /**
  * Lets add some intro
  * */
-let ival = window.setInterval(() => {
+const ival = window.setInterval(() => {
     if (! isInitialized) return
     cshape++;
     if(ParticlesAttribute.count <= cshape)
@@ -297,7 +297,6 @@ const eventDown = ({x, y}:XYCoordinate) => {
      * */
     Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr)
     
-    
     let color = Particles[mouseEvent.shapeIndex].color;
     
     color = color.replace("0.5", "1.0")
@@ -310,13 +309,16 @@ const eventUp = ({x, y}:XYCoordinate) => {
     
     try {
         Particles[mouseEvent.shapeIndex].size = 20
-    } catch(TypeError) {}
+    } catch(err) {
+        console.warn(err)
+    }
     
     setTimeout(() => {
         try {
             Particles[mouseEvent.shapeIndex].size = 80
-        } catch(TypeError) {}
-        
+        } catch(err) {
+            console.warn(err)
+        }
         // Finally
         setTimeout(() => {
             // Remove all overrided shapes

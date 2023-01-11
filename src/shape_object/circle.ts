@@ -17,7 +17,7 @@ class Circle extends Shape implements ShapeProperties {
         
         this.context.arc(x, y, this.size, 0, 2 * Math.PI);
         
-        (doMore||function(){})(this.context);
+        (doMore ?? function(){ return void 0})(this.context);
         
         this.context.closePath();
         
