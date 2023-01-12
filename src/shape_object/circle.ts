@@ -2,10 +2,6 @@ import Shape from './shape'
 
 class Circle extends Shape {
 
-    constructor(context:Shape2DContext, attr:ShapeProperties) {
-        super(context, attr)
-    }
-    
     public get type():string {
         return "circle";
     }

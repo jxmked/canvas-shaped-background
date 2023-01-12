@@ -1,11 +1,6 @@
 import Shape from './shape'
 
-class Triangle extends Shape implements ShapeInterface {
-    
-    constructor(context:Shape2DContext, attr:ShapeProperties) {    
-        super(context, attr)
-    }
-    
+class Triangle extends Shape {
     public get type(): string {
         return "triangle";
     }

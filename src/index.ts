@@ -2,10 +2,11 @@ import './styles/index.css';
 import gtagPageview from './utils/gtag';
 import * as ShapeArray from "./shape_object/index";
 import Shape from './shape_object/shape'; // Will be use as interface
-
+import * as helpers from './utils/helpers'
 // Page Viewed
 gtagPageview(window.location.href.toString());
 
+const target:HTMLBodyElement = document.body as HTMLBodyElement
 const canvas:HTMLCanvasElement = document.getElementById("canvas")! as HTMLCanvasElement;
 const overlayedCanvas:HTMLCanvasElement = document.getElementById("overlayed-canvas")! as HTMLCanvasElement;
 
@@ -25,10 +26,17 @@ const ctx:CanvasRenderingContext2D = canvas.getContext('2d')!
  * */
 const octx :CanvasRenderingContext2D = overlayedCanvas.getContext('2d')! 
 const shapeArray:TypeShape[] = Object.values(ShapeArray)
-
-console.log(ShapeArray)
-
 const Particles:Shape[] = [];
+
+export const bgColor:Function = (value:string): void => {
+    ctx.fillStyle = value
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+}
+
+export const clrscr:Function = (): void => {
+    octx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+}
 
 const ParticlesAttribute:ParticlesProps = {
     count: 10, // Shape count
@@ -46,72 +54,50 @@ const ParticlesAttribute:ParticlesProps = {
     transitionSpeedXRange: [-5, 5]
 }
 
-const bgColor:Function = (value:string): void => {
-    ctx.fillStyle = value
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-}
-
-const clrscr:Function = (): void => {
-    octx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-}
-
-const flipper:Function = (num: number): number => {
-    return Math.floor(((Math.random() * 2) * num) - num);
-}
-
-const getRandomInRange:Function = (mn:number, mx:number): number => {
-    return Math.floor(Math.random() * (mx - mn)) + mn
-}
-
-const getRandomItem:Function = <T>(arr:T[]): T => {
-    return arr[Math.floor(Math.random() * arr.length)]
-}
-
 const addShape:Function = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeProperties|undefined => {
     
     const attr:ShapeProperties = {
-        size: getRandomInRange(
+        size: helpers.getRandomInRange(
             ParticlesAttribute.sizeRange[0],
             ParticlesAttribute.sizeRange[1]
         ),
         
-        color: getRandomItem(ParticlesAttribute.colors),
+        color: helpers.getRandomItem(ParticlesAttribute.colors),
         
         angle: 7,
         
-        thick: getRandomInRange(
+        thick: helpers.getRandomInRange(
             ParticlesAttribute.thickRange[0],
             ParticlesAttribute.thickRange[1]
         ),
         
-        style: getRandomItem(ParticlesAttribute.styles),
+        style: helpers.getRandomItem(ParticlesAttribute.styles),
         
         position: { x, y },
         
-        rotationSpeed: getRandomInRange(
+        rotationSpeed: helpers.getRandomInRange(
             ParticlesAttribute.rotationSpeedRange[0],
             ParticlesAttribute.rotationSpeedRange[1]
         ),
         
         velocity: {
-            x: getRandomInRange(
+            x: helpers.getRandomInRange(
                 ParticlesAttribute.transitionSpeedXRange[0],
                 ParticlesAttribute.transitionSpeedXRange[1]
             ),
-            y: getRandomInRange(
+            y: helpers.getRandomInRange(
                 ParticlesAttribute.transitionSpeedXRange[0],
                 ParticlesAttribute.transitionSpeedXRange[1]
             )
         },
         
-        isClockwise: getRandomItem([true, false])
+        isClockwise: helpers.getRandomItem([true, false])
     }
     
     if(returnValue)
         return attr
         
-    const shape:TypeShape = getRandomItem(shapeArray)
+    const shape:TypeShape = helpers.getRandomItem(shapeArray)
     
     Particles.push(new shape(ctx, attr))
     
@@ -147,25 +133,25 @@ function start() {
         
         //  Width boundaries
         if (x <= 0) {
-            moveX = (Math.abs(moveX) + flipper(2))
+            moveX = (Math.abs(moveX) + helpers.flipper(2))
             x = 0
-            shape.isClockwise = getRandomItem([true, false])
+            shape.isClockwise = helpers.getRandomItem([true, false])
         
         } else if (x >= canvas.width) {
-            moveX = -(Math.abs(moveX) + flipper(2))
+            moveX = -(Math.abs(moveX) + helpers.flipper(2))
             x = canvas.width
-            shape.isClockwise = getRandomItem([true, false])
+            shape.isClockwise = helpers.getRandomItem([true, false])
         }
         
         // height boundaries
         if (y <= 0) {
             y = 0
-            moveY = (Math.abs(moveY) + flipper(2))
-            shape.isClockwise = getRandomItem([true, false])
+            moveY = (Math.abs(moveY) + helpers.flipper(2))
+            shape.isClockwise = helpers.getRandomItem([true, false])
         } else if(y >= canvas.height) {
             y = canvas.height
-            moveY = -(Math.abs(moveY) + flipper(2))
-            shape.isClockwise = getRandomItem([true, false])
+            moveY = -(Math.abs(moveY) + helpers.flipper(2))
+            shape.isClockwise = helpers.getRandomItem([true, false])
         }
         
         /**
@@ -217,8 +203,8 @@ const ival:number = window.setInterval(() => {
         clearInterval(ival)
         
     addShape({
-        x:getRandomInRange(20, canvas.width - 20), 
-        y:canvas.height
+        x: helpers.getRandomInRange(20, canvas.width - 20), 
+        y: canvas.height
     })
     
 }, 100)
@@ -250,8 +236,6 @@ const mouseEvent:MouseEventProps = {
     shapeIndex: -1
 }
 
-const target:HTMLBodyElement = document.body as HTMLBodyElement
-
 const eventMove = ({x, y}:XYCoordinate) => {
     const {left, top, width, height} = canvas.getBoundingClientRect()
     const dx:number = ((x - left) / width) * canvas.width
@@ -272,7 +256,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
     
     mouseEvent.shapeIndex = Particles.length
     
-    const shape:TypeShape = getRandomItem(shapeArray)
+    const shape:TypeShape = helpers.getRandomItem(shapeArray)
     
     const shapeAttr:ShapeProperties = {
         ...addShape({

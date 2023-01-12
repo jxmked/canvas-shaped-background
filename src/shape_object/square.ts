@@ -1,11 +1,6 @@
 import Shape from './shape'
 
 class Square extends Shape {
-    
-    constructor(context:Shape2DContext, attr:ShapeProperties) {
-        super(context, attr)
-    }
-    
     public get type(): string {
         return "square";
     }
