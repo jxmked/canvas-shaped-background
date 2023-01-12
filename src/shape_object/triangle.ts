@@ -1,13 +1,13 @@
-import Shape from './shape'
+import Shape from './shape';
 
 class Triangle extends Shape {
     public get type(): string {
-        return "triangle";
+        return 'triangle';
     }
-    
-    public draw():void {
-        this.polygonShape(3)
-        this.applyStyle()
+
+    public draw(): void {
+        this.polygonShape(3);
+        this.applyStyle();
     }
 }
 
