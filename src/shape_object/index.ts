@@ -5,16 +5,7 @@ import Hexagon from "./hexagon";
 import Octagon from "./octagon";
 import Cross from "./cross";
 
-export default [
-    Triangle,
-    Square,
-    Circle,
-    Hexagon,
-    Octagon,
-    Cross
-]
-
-export { 
+export {
     Triangle,
     Square,
     Circle,

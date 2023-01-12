@@ -1,6 +1,6 @@
 import Shape from './shape'
 
-class Cross extends ShapeObject {
+class Cross extends Shape {
     
     constructor(context:Shape2DContext, attr:ShapeProperties) {
         super(context, attr)

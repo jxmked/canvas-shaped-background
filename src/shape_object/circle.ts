@@ -1,6 +1,6 @@
 import Shape from './shape'
 
-class Circle extends ShapeObject {
+class Circle extends Shape {
 
     constructor(context:Shape2DContext, attr:ShapeProperties) {
         super(context, attr)

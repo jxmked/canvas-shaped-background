@@ -1,6 +1,7 @@
 import './styles/index.css';
 import gtagPageview from './utils/gtag';
-import shapeArray from "./shape_object/index";
+import * as ShapeArray from "./shape_object/index";
+import Shape from './shape_object/shape'; // Will be use as interface
 
 // Page Viewed
 gtagPageview(window.location.href.toString());
@@ -23,12 +24,13 @@ const ctx:CanvasRenderingContext2D = canvas.getContext('2d')!
  * This canvas handles mouse events
  * */
 const octx :CanvasRenderingContext2D = overlayedCanvas.getContext('2d')! 
+const shapeArray:TypeShape[] = Object.values(ShapeArray)
 
-let width:number;
-let height:number;
+console.log(ShapeArray)
 
-const Particles:ShapeObject[] = [];
-const ParticlesAttribute:ParticlesAttributeProps = {
+const Particles:Shape[] = [];
+
+const ParticlesAttribute:ParticlesProps = {
     count: 10, // Shape count
     colors: [ // Color for shapes
         "rgb(74, 176, 152, 1)", // Green
@@ -50,8 +52,8 @@ const bgColor:Function = (value:string): void => {
 }
 
 const clrscr:Function = (): void => {
-    octx.clearRect(0, 0, width, height)
-    ctx.clearRect(0, 0, width, height)
+    octx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
 const flipper:Function = (num: number): number => {
@@ -109,7 +111,7 @@ const addShape:Function = ({x, y}:XYCoordinate, returnValue?:boolean):ShapePrope
     if(returnValue)
         return attr
         
-    const shape:ShapeObject = getRandomItem(shapeArray)
+    const shape:TypeShape = getRandomItem(shapeArray)
     
     Particles.push(new shape(ctx, attr))
     
@@ -122,12 +124,12 @@ function start() {
     
     bgColor("rgb(26, 43, 51, 1.0)")
     
-    Particles.forEach((shape) => {
+    Particles.forEach((shape:Shape) => {
         // get coord
         let { x, y } = shape.position
-        let angle = Math.abs(shape.angle)
-        let moveX = shape.velocity.x
-        let moveY = shape.velocity.y
+        let angle:number = Math.abs(shape.angle)
+        let moveX:number = shape.velocity.x
+        let moveY:number = shape.velocity.y
         
         angle += shape.rotationSpeed
         
@@ -149,9 +151,9 @@ function start() {
             x = 0
             shape.isClockwise = getRandomItem([true, false])
         
-        } else if (x >= width) {
+        } else if (x >= canvas.width) {
             moveX = -(Math.abs(moveX) + flipper(2))
-            x = width
+            x = canvas.width
             shape.isClockwise = getRandomItem([true, false])
         }
         
@@ -160,8 +162,8 @@ function start() {
             y = 0
             moveY = (Math.abs(moveY) + flipper(2))
             shape.isClockwise = getRandomItem([true, false])
-        } else if(y >= height) {
-            y = height
+        } else if(y >= canvas.height) {
+            y = canvas.height
             moveY = -(Math.abs(moveY) + flipper(2))
             shape.isClockwise = getRandomItem([true, false])
         }
@@ -188,18 +190,15 @@ function start() {
     window.requestAnimationFrame(start)
 }
 
-let isInitialized = false;
-let cshape = 0;
+let isInitialized: boolean = false;
+let cshape:number = 0;
 
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth * 2
     canvas.height = window.innerHeight * 2
     
-    width = canvas.width;
-    height = canvas.height;
-    
-    overlayedCanvas.width = width;
-    overlayedCanvas.height = height;
+    overlayedCanvas.width = canvas.width;
+    overlayedCanvas.height = canvas.height;
     
     isInitialized = true;
     
@@ -211,7 +210,7 @@ window.requestAnimationFrame(start)
 /**
  * Lets add some intro
  * */
-const ival = window.setInterval(() => {
+const ival:number = window.setInterval(() => {
     if (! isInitialized) return
     cshape++;
     if(ParticlesAttribute.count <= cshape)
@@ -251,12 +250,12 @@ const mouseEvent:MouseEventProps = {
     shapeIndex: -1
 }
 
-const target = document.body;
+const target:HTMLBodyElement = document.body as HTMLBodyElement
 
 const eventMove = ({x, y}:XYCoordinate) => {
     const {left, top, width, height} = canvas.getBoundingClientRect()
-    const dx = ((x - left) / width) * canvas.width
-    const dy = ((y - top) / height) * canvas.height
+    const dx:number = ((x - left) / width) * canvas.width
+    const dy:number = ((y - top) / height) * canvas.height
     
     mouseEvent.x = dx;
     mouseEvent.y = dy;
@@ -273,7 +272,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
     
     mouseEvent.shapeIndex = Particles.length
     
-    const shape = getRandomItem(shapeArray)
+    const shape:TypeShape = getRandomItem(shapeArray)
     
     const shapeAttr:ShapeProperties = {
         ...addShape({
@@ -293,7 +292,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
      * */
     Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr)
     
-    let color = Particles[mouseEvent.shapeIndex].color;
+    let color:ShapeProperties['color'] = Particles[mouseEvent.shapeIndex].color;
     
     color = color.replace("0.5", "1.0")
     Particles[mouseEvent.shapeIndex].color = color
@@ -327,11 +326,11 @@ const eventUp = ({x, y}:XYCoordinate) => {
     },  50)
 }
 
-target.addEventListener("mousemove", (evt) => eventMove({x:evt.pageX, y:evt.pageY}))
-target.addEventListener("mousedown", (evt) => eventDown({x:evt.pageX, y:evt.pageY}))
-target.addEventListener("mouseup", (evt) => eventUp({x:evt.pageX, y:evt.pageY}))
+target.addEventListener("mousemove", (evt:MouseEvent) => eventMove({x:evt.pageX, y:evt.pageY}))
+target.addEventListener("mousedown", (evt:MouseEvent) => eventDown({x:evt.pageX, y:evt.pageY}))
+target.addEventListener("mouseup", (evt:MouseEvent) => eventUp({x:evt.pageX, y:evt.pageY}))
 
-target.addEventListener("touchmove", (evt) => {
+target.addEventListener("touchmove", (evt:TouchEvent) => {
     const { pageX, pageY } = evt.targetTouches[0]
     
     eventMove({
@@ -340,7 +339,7 @@ target.addEventListener("touchmove", (evt) => {
     })
 })
 
-target.addEventListener("touchend", (evt) => {
+target.addEventListener("touchend", (evt:TouchEvent) => {
     const { pageX, pageY } = evt.changedTouches[0]
     
     eventUp({
@@ -350,7 +349,7 @@ target.addEventListener("touchend", (evt) => {
 })
 
 
-target.addEventListener("touchstart", (evt) => {
+target.addEventListener("touchstart", (evt:TouchEvent) => {
     const { pageX, pageY } = evt.changedTouches[0]
     
     eventDown({

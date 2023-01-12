@@ -1,17 +1,17 @@
 import Shape from './shape'
 
-class Triangle extends ShapeObject {
+class Triangle extends Shape implements ShapeInterface {
     
     constructor(context:Shape2DContext, attr:ShapeProperties) {    
         super(context, attr)
     }
     
-    get type(): string {
+    public get type(): string {
         return "triangle";
     }
     
     public draw():void {
-        this.createCircularShape(3)
+        this.polygonShape(3)
         this.applyStyle()
     }
 }

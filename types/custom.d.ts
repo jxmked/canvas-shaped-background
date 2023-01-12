@@ -10,7 +10,112 @@ interface VelocityProperties {
 
 type Shape2DContext = CanvasRenderingContext2D;
 
-interface ParticlesAttributeProps {
+interface ShapeProperties {
+    /**
+     * Size of the object
+     * */
+    size: number;
+
+    /**
+     * Color of the object
+     * 
+     * Accepts valid color from CanvasRenderingContext2D.color
+     * */
+    color: string;
+
+    /**
+     * Angle of object
+     * */
+    angle: number;
+
+    /**
+     * Line Width of an object 
+     * */
+    thick: number;
+
+    /**
+     * Style of an object
+     * */
+    style: "stroke"|"fill";
+
+    /**
+     * Position of an object
+     * { x, y }
+     * */
+    position: XYCoordinate;
+
+    /**
+     * Rotation Speed of an object
+     * */
+    rotationSpeed: number;
+
+    /**
+     * Movement speed of X and y axis of an object
+     * */
+    velocity: VelocityProperties;
+
+    /**
+     * Rotation angle of an object
+     * */
+    isClockwise: boolean;
+
+    /**
+     * Is an object is overrided by other method?
+     * 
+     * Useful if the shape was in other events
+     * */
+    isOverride?:boolean
+
+    /**
+     * For Self Defined Properties
+     * */
+    data?:object
+}
+
+interface ShapeMethods {
+    
+    /**
+     * Apply style after crearing lines
+     * */
+    public applyStyle(): void;
+    
+    /**
+     * Returns new coordinate from midpoint to spcified distance
+     * */
+    public getAnglePoint(size: number, angle: ShapeProperties['angle']): XYCoordinate;
+    
+    /**
+     * Create polygon shale base on endpoints
+     * */
+    public polygonShape(endPointsCount: number): void;
+    
+    /**
+     * Move object into specified pixel
+     * */
+    public move({ x, y }: XYCoordinate): void;
+    
+    /**
+     * Move object into specified coordinate
+     * */
+    public translate({ x, y }: XYCoordinate): void;
+    
+    /**
+     * Rotate object by given angle
+     * 
+     * Ranges: 0 - 360
+     * */
+    public rotate(angle: ShapeProperties['angle']): void;
+}
+
+interface ShapeInterface extends ShapeMethods, ShapeProperties { }
+
+/**
+ * initializable class
+ * */
+type TypeShape = (new(context: Shape2DContext, attr: ShapeProperties) => Shape)
+
+
+interface ParticlesProps {
     count: number;
     colors: ShapeProperties['color'][];
     sizeRange: ShapeProperties['size'][];

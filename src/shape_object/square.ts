@@ -1,17 +1,17 @@
 import Shape from './shape'
 
-class Square extends ShapeObject {
+class Square extends Shape {
     
     constructor(context:Shape2DContext, attr:ShapeProperties) {
         super(context, attr)
     }
     
-    public get type():string {
+    public get type(): string {
         return "square";
     }
     
     public draw():void {
-        this.createCircularShape(4);
+        this.polygonShape(4);
         this.applyStyle()
     }
 }

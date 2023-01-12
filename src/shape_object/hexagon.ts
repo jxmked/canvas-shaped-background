@@ -1,6 +1,6 @@
 import Shape from './shape'
 
-class Hexagon extends ShapeObject {
+class Hexagon extends Shape {
     
     constructor(context:CanvasRenderingContext2D, attr:ShapeProperties) {
         super(context, attr)
@@ -11,7 +11,7 @@ class Hexagon extends ShapeObject {
     }
     
     public draw():void {
-        this.createCircularShape(5)
+        this.polygonShape(5)
         this.applyStyle()
     }
 }

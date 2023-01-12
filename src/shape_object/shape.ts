@@ -1,5 +1,5 @@
 
-class Shape {
+class Shape implements ShapeInterface {
     
     public size:ShapeProperties['size'];
     public color:ShapeProperties['color'];
@@ -12,11 +12,10 @@ class Shape {
     public isClockwise:ShapeProperties['isClockwise'];
     public isOverride:ShapeProperties['isOverride'];
     public velocity:ShapeProperties['velocity']
-    public static countShape = 0;
     public data:ShapeProperties['data'];
+    public static countShape = 0;
     
-    constructor(
-        context:Shape2DContext, attr:ShapeProperties) {
+    constructor(context:Shape2DContext, attr:ShapeProperties) {
         const {
             size, 
             color, 
@@ -52,21 +51,18 @@ class Shape {
     }
     
     public applyStyle():void {
-        if(this.style === "stroke") {
-            this.context.strokeStyle = this.color;
-            this.context.lineWidth = this.thick;
-            this.context.stroke()
+        if(this.style === "fill") {
+            this.context.fillStyle = this.color;
+            this.context.fill()
             return;
         }
         
-        this.context.fillStyle = this.color;
-        this.context.fill()
+        this.context.strokeStyle = this.color;
+        this.context.lineWidth = this.thick;
+        this.context.stroke()
     }
     
     public getAnglePoint(size:number, angle:ShapeProperties['angle']): XYCoordinate {
-        /**
-         * Get coordinates to a given distance from center point
-         * */
         const { x, y } = this.position;
         const rad:number = angle * (Math.PI / 180);
         return { 
@@ -75,12 +71,8 @@ class Shape {
         };
     }
     
-    /**
-     * Create Circular shape base on end points
-     * 
-     * */
-    public createCircularShape(endPointsCount:number): void {
-        const numOfSections: number = 360 / endPointsCount;
+    public polygonShape(endPointCount:number): void {
+        const numOfSections: number = 360 / endPointCount;
         const midpoint:XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
         
         this.context.beginPath()
@@ -94,16 +86,13 @@ class Shape {
         this.context.closePath();
     }
     
-    /**
-     * Move object ny step
-     * */
     public move({x, y}:XYCoordinate): void {
         this.position.x += x;
         this.position.y += y;
     }
     
     /**
-     * Move object into desired location
+     * Move object into desired coordinate
      * */
     public translate({x, y}:XYCoordinate):void {
         this.position = {x, y}
@@ -115,4 +104,9 @@ class Shape {
 
 }
 
-export default Shape;
+abstract class AbstractShape extends Shape {
+    abstract get type():string;
+    abstract draw(): void;
+}
+
+export default AbstractShape;
