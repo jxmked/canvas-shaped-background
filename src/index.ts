@@ -28,12 +28,18 @@ const octx :CanvasRenderingContext2D = overlayedCanvas.getContext('2d')!
 const shapeArray:TypeShape[] = Object.values(ShapeArray)
 const Particles:Shape[] = [];
 
-export const bgColor:Function = (value:string): void => {
+/**
+ * Change main canvas background color 
+ * */
+export const bgColor:((value:string) => void) = (value:string): void => {
     ctx.fillStyle = value
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
-export const clrscr:Function = (): void => {
+/**
+ * Clear canvas context
+ * */
+export const clrscr:(() => void) = (): void => {
     octx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
@@ -54,7 +60,7 @@ const ParticlesAttribute:ParticlesProps = {
     transitionSpeedXRange: [-5, 5]
 }
 
-const addShape:Function = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeProperties|undefined => {
+const addShape:(({x,y}:XYCoordinate, returnValue?:boolean) =>  ShapeProperties|undefined) = ({x, y}:XYCoordinate, returnValue?:boolean):ShapeProperties|undefined => {
     
     const attr:ShapeProperties = {
         size: helpers.getRandomInRange(
@@ -99,12 +105,12 @@ const addShape:Function = ({x, y}:XYCoordinate, returnValue?:boolean):ShapePrope
         
     const shape:TypeShape = helpers.getRandomItem(shapeArray)
     
-    Particles.push(new shape(ctx, attr))
+    Particles.push(new shape(ctx, attr) as Shape)
     
     return;
 }
 
-function start() {
+function start(): void {
     
     clrscr()
     
@@ -176,8 +182,8 @@ function start() {
     window.requestAnimationFrame(start)
 }
 
-let isInitialized: boolean = false;
-let cshape:number = 0;
+let isInitialized = false;
+let cshape = 0;
 
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth * 2
@@ -236,7 +242,7 @@ const mouseEvent:MouseEventProps = {
     shapeIndex: -1
 }
 
-const eventMove = ({x, y}:XYCoordinate) => {
+const eventMove:(({x,y}:XYCoordinate) => void) = ({x, y}:XYCoordinate): void => {
     const {left, top, width, height} = canvas.getBoundingClientRect()
     const dx:number = ((x - left) / width) * canvas.width
     const dy:number = ((y - top) / height) * canvas.height
@@ -250,7 +256,7 @@ const eventMove = ({x, y}:XYCoordinate) => {
         }) 
 }
 
-const eventDown = ({x, y}:XYCoordinate) => {
+const eventDown:(({x,y}:XYCoordinate) => void) = ({x, y}:XYCoordinate): void => {
     eventMove({x, y})
     mouseEvent.isDown = true;
     
@@ -274,7 +280,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
     /**
      * Insert Shape into overlayed canvas so its not blurred
      * */
-    Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr)
+    Particles[mouseEvent.shapeIndex] = new shape(octx, shapeAttr) as Shape
     
     let color:ShapeProperties['color'] = Particles[mouseEvent.shapeIndex].color;
     
@@ -282,7 +288,7 @@ const eventDown = ({x, y}:XYCoordinate) => {
     Particles[mouseEvent.shapeIndex].color = color
 }
 
-const eventUp = ({x, y}:XYCoordinate) => {
+const eventUp: (({x,y}:XYCoordinate) => void) = ({x, y}:XYCoordinate): void => {
     mouseEvent.isDown = false
     eventMove({x, y})
     
