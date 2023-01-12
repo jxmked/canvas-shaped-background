@@ -1,42 +1,26 @@
-
-class Shape implements ShapeAttributes {
-    
-    public size:ShapeAttributes['size'];
-    public color:ShapeAttributes['color'];
-    public angle:ShapeAttributes['angle'];
-    public thick:ShapeAttributes['thick'];
-    public style:ShapeAttributes['style'];
-    public context:CanvasRenderingContext2D;
-    public position:ShapeAttributes['position'];
-    public rotationSpeed:ShapeAttributes['rotationSpeed']
-    public isClockwise:ShapeAttributes['isClockwise'];
-    public isOverride:ShapeAttributes['isOverride'];
-    public velocity:ShapeAttributes['velocity']
+class Shape implements ShapeInterface {
+    public size: ShapeProperties['size'];
+    public color: ShapeProperties['color'];
+    public angle: ShapeProperties['angle'];
+    public thick: ShapeProperties['thick'];
+    public style: ShapeProperties['style'];
+    public context: Shape2DContext;
+    public position: ShapeProperties['position'];
+    public rotationSpeed: ShapeProperties['rotationSpeed'];
+    public isClockwise: ShapeProperties['isClockwise'];
+    public isOverride: ShapeProperties['isOverride'];
+    public velocity: ShapeProperties['velocity'];
+    public data: ShapeProperties['data'];
     public static countShape = 0;
-    public data:ShapeAttributes['data'];
-    
-    constructor(
-        context:CanvasRenderingContext2D, 
-        {
-            size,
-            color,
-            angle,
-            thick,
-            style,
-            position,
-            rotationSpeed,
-            isClockwise,
-            isOverride,
-            velocity,
-            data
-    }:ShapeAttributes) {
-        
-        ++Shape.countShape
-        
+
+    constructor(context: Shape2DContext, attr: ShapeProperties) {
+        const { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity, data } = attr;
+
+        ++Shape.countShape;
+
         // Validate angle
-        if (angle > 360 && angle < 0) 
-            throw new Error("Invalid angle")
-            
+        if (angle > 360 && angle < 0) throw new Error('Invalid angle');
+
         this.size = size;
         this.color = color;
         this.angle = angle;
@@ -45,55 +29,68 @@ class Shape implements ShapeAttributes {
         this.position = position;
         this.context = context;
         this.rotationSpeed = rotationSpeed;
-        this.isClockwise = isClockwise
-        this.isOverride = (isOverride === void 0) ? false : isOverride
+        this.isClockwise = isClockwise;
+        this.isOverride = isOverride === void 0 ? false : isOverride;
         this.velocity = velocity;
         this.data = data;
     }
-    
-    public applyStyle():void {
-        if(this.style === "stroke") {
-            this.context.strokeStyle = this.color;
-            this.context.lineWidth = this.thick;
-            this.context.stroke()
+
+    public applyStyle(): void {
+        if (this.style === 'fill') {
+            this.context.fillStyle = this.color;
+            this.context.fill();
             return;
         }
-        
-        this.context.fillStyle = this.color;
-        this.context.fill()
+
+        this.context.strokeStyle = this.color;
+        this.context.lineWidth = this.thick;
+        this.context.stroke();
     }
-    
-    public getAnglePoint(size:number, angle:ShapeAttributes['angle']): XYCoordinate {
-        /**
-         * Get coordinates to a given distance from center point
-         * */
+
+    public getAnglePoint(size: number, angle: ShapeProperties['angle']): XYCoordinate {
         const { x, y } = this.position;
-        const rad = angle * (Math.PI / 180);
-        return { 
-            x: x + (size * Math.cos(rad)),
-            y: y + (size * Math.sin(rad))
+        const rad: number = angle * (Math.PI / 180);
+        return {
+            x: x + size * Math.cos(rad),
+            y: y + size * Math.sin(rad)
         };
     }
-    
-    /**
-     * Move object ny step
-     * */
-    public move({x, y}:XYCoordinate): void {
+
+    public polygonShape(endPointCount: number): void {
+        const numOfSections: number = 360 / endPointCount;
+        const midpoint: XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
+
+        this.context.beginPath();
+        this.context.moveTo(midpoint.x, midpoint.y);
+
+        for (let deg = numOfSections; deg <= 360 - numOfSections; deg += numOfSections) {
+            const endpoint: XYCoordinate = this.getAnglePoint(this.size, deg + this.angle);
+            this.context.lineTo(endpoint.x, endpoint.y);
+        }
+
+        this.context.closePath();
+    }
+
+    public move({ x, y }: XYCoordinate): void {
         this.position.x += x;
         this.position.y += y;
     }
-    
+
     /**
-     * Move object into desired location
+     * Move object into desired coordinate
      * */
-    public translate({x, y}:XYCoordinate):void {
-        this.position = {x, y}
-    }
-    
-    public rotate(angle:ShapeAttributes['angle']): void {
-        this.angle = angle
+    public translate({ x, y }: XYCoordinate): void {
+        this.position = { x, y };
     }
 
+    public rotate(angle: ShapeProperties['angle']): void {
+        this.angle = angle;
+    }
 }
 
-export default Shape;
+abstract class AbstractShape extends Shape {
+    abstract get type(): string;
+    abstract draw(): void;
+}
+
+export default AbstractShape;
