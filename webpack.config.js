@@ -137,7 +137,7 @@ module.exports = function(env, config) {
                 short_name: CONFIG.shortAppName,
                 description: CONFIG.description,
                 orientation: "portrait",
-                start_url: "/",
+                start_url: ".",
                 background_color: CONFIG.colors.background,
                 theme_color: CONFIG.colors.theme,
                 icons: [{
