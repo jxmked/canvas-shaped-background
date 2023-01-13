@@ -5,4 +5,11 @@ import Hexagon from './hexagon';
 import Octagon from './octagon';
 import Cross from './cross';
 
-export { Triangle, Square, Circle, Hexagon, Octagon, Cross };
+export {
+    Triangle,
+    Square,
+    Circle,
+    Hexagon,
+    Octagon,
+    Cross
+};

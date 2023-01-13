@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: 'Build and Deploy'
+=======
+name: 'Build for deployment'
+>>>>>>> temp
 
 on:
   push:
@@ -36,8 +40,27 @@ jobs:
       - name: 'Build App'
         run: npm run build
       
+<<<<<<< HEAD
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./dist
+=======
+      - name: 'Push to gh-pages'
+        run: |
+            git config --global user.email "${{ secrets.EMAIL }}"
+            git config --global user.name "${{ secrets.NAME }}"
+            git rm --cached -r .
+            git add -f ./index.html
+            git add -f ./assets
+            git add -f ./dist
+            git add -f ./favicon.ico
+            git add -f ./404.html
+            git add -f ./site.webmanifest
+            git commit -m "Update"
+            git branch -M gh-pages
+            git push -f 'https://${{ secrets.GH_AUTH_TOKEN }}@github.com/${{ secrets.NAME }}/jxmked.git'
+            
+
+>>>>>>> temp

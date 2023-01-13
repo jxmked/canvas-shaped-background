@@ -3,6 +3,7 @@ import gtagPageview from './utils/gtag';
 import * as ShapeArray from './shape_object/index';
 import Shape from './shape_object/shape'; // Will be use as interface
 import * as helpers from './utils/helpers';
+import Canvas from './canvas';
 
 // Page Viewed
 gtagPageview(window.location.href.toString());
@@ -10,7 +11,7 @@ gtagPageview(window.location.href.toString());
 const target: HTMLBodyElement = document.body as HTMLBodyElement;
 const canvas: HTMLCanvasElement = document.getElementById('canvas')! as HTMLCanvasElement;
 const overlayedCanvas: HTMLCanvasElement = document.getElementById('overlayed-canvas')! as HTMLCanvasElement;
-
+const CCP:Canvas = new Canvas(canvas);
 /**
  * We can use CanvasRenderingContext2D.shadowBlur
  * but it has a drawback when it comes to performance.
@@ -42,7 +43,7 @@ export const bgColor: (value: string) => void = (value: string): void => {
  * */
 export const clrscr: () => void = (): void => {
     octx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    CCP.clear()
 };
 
 const ParticlesAttribute: ParticlesProps = {
