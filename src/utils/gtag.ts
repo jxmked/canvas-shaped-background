@@ -14,8 +14,8 @@ declare const window: WindowWithDataLayer;
 window.dataLayer = window.dataLayer || [];
 
 function onClickEvent(element: HTMLElement) {
-    const url = element.getAttribute('href');
-    const text = element.innerText;
+    const url: string = element.getAttribute('href')!;
+    const text: string = element.innerText;
 
     element.addEventListener('click', function () {
         gtag('event', 'url_clicked', {
@@ -29,19 +29,21 @@ function onClickEvent(element: HTMLElement) {
 (function (id: string) {
     if (!window.location.protocol.toString().startsWith('https')) return;
 
-    const scr = document.createElement('script');
+    const scr: HTMLScriptElement = document.createElement('script');
     scr.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=' + id);
     scr.async = true;
     scr.setAttribute('type', 'application/javascript');
 
     document.getElementsByTagName('head')[0].appendChild(scr);
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    window.gtag =
-        window.gtag ||
-        function (...args: WindowWithDataLayer['dataLayer']) {
-            window.dataLayer.push(...args);
+    if (window['gtag'] != void 0) {
+        // eslint-disable-next-line no-self-assign
+        window['gtag'] = window['gtag'];
+    } else {
+        window['gtag'] = function (...args: WindowWithDataLayer['dataLayer']) {
+            window['dataLayer'].push(...args);
         };
+    }
 
     gtag('js', new Date());
     gtag('config', id);

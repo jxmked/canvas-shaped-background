@@ -3,9 +3,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     // ensure that nobody can accidentally use this config for a build
-   // "noEmit": true
-    "declaration":true,
-    "emitDeclarationOnly": true
+    "noEmit": true
+   // "declaration":true,
+    //"emitDeclarationOnly": true
   },
   "include": [
     // whatever paths you intend to lint

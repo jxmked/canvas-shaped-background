@@ -1,3 +1,5 @@
+import { CanvasGetView as ContextHandler} from '../canvas'
+
 class Shape implements ShapeInterface {
     public size: ShapeProperties['size'];
     public color: ShapeProperties['color'];
@@ -12,14 +14,17 @@ class Shape implements ShapeInterface {
     public velocity: ShapeProperties['velocity'];
     public data: ShapeProperties['data'];
     public static countShape = 0;
-
+    private contextHandler:ContextHandler;
+    
     constructor(context: Shape2DContext, attr: ShapeProperties) {
         const { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity, data } = attr;
-
+        
+        this.contextHandler = new ContextHandler(context);
+        
         ++Shape.countShape;
 
         // Validate angle
-        if (angle > 360 && angle < 0) throw new Error('Invalid angle');
+        if (angle >= 360 && angle < 0) throw new Error('Invalid angle');
 
         this.size = size;
         this.color = color;
