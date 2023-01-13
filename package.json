@@ -1,7 +1,9 @@
 {
   "name": "canvas-shape-background",
   "description": "Random shape animation in canvas",
-  "version": "1.0.3",
+
+  "version": "1.0.4",
+
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -45,6 +47,7 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "webpack-pwa-manifest": "^4.3.0"
   }
 }

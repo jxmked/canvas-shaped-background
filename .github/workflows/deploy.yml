@@ -1,0 +1,43 @@
+name: 'Build and Deploy'
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+    
+    branches: [xio]
+    
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: "build"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      
+      - name: 'Init npm'
+        run: npm ci
+      
+      - name: 'Install gh-pages'
+        run: npm install gh-pages
+        
+      - name: 'Build App'
+        run: npm run build
+      
+      - name: deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./dist
