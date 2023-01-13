@@ -326,3 +326,14 @@ target.addEventListener('touchstart', (evt: TouchEvent) => {
         y: pageY
     });
 });
+
+
+
+/*
+const btn:HTMLButtonElement = document.getElementById("btn")! as HTMLButtonElement;
+
+
+btn.addEventListener("click", () =>{
+    alert("clicked");
+}, false)
+*/

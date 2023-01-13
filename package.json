@@ -1,9 +1,7 @@
 {
   "name": "canvas-shape-background",
   "description": "Random shape animation in canvas",
-
   "version": "1.0.4",
-
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,18 +10,18 @@
     "nobin-install": "npm install --no-bin-links",
     "start": "npm run dev",
     "lint:tsc": "eslint -c .eslintrc.js ./src",
+    "lint:tsc:fix": "eslint -c .eslintrc.js ./src --fix",
     "lint": "npm run lint:tsc",
     "typecheck:tsc": "tsc -p tsconfig.eslint.json",
     "typecheck:tsc:w": "tsc -p tsconfig.eslint.json --watch",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
-
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jxmked/canvas-shaped-background.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["canvas", "animation", "2d", "javascript", "opensource"],
+  "author": "Jovan De Guia",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jxmked/canvas-shaped-background/issues"
@@ -39,6 +37,7 @@
     "eslint": "^8.31.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "interpolate-html-plugin": "^4.0.0",
     "mini-css-extract-plugin": "^2.7.2",
     "postcss-loader": "^7.0.2",
     "prettier": "^2.8.2",

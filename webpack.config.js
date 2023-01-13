@@ -3,8 +3,17 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+const package = require('./package.json');
 
-var devMode = process.env['NODE' + '_ENV'] !== 'production'
+/**
+ * First Webpack App
+ * 
+ * I just try to put too much effort for this to try and look
+ * for other possibilities and to figure out other features
+ * */
+
+var devMode = process.env['NODE' + '_ENV'] !== 'production';
 const CONFIG = {
     
     output: {
@@ -86,7 +95,6 @@ module.exports = function(env, config) {
             path: path.resolve(__dirname, './' + CONFIG.output.dir),
             clean: true
         },
-        
         optimization: {
             splitChunks: {
                 chunks: 'all',
@@ -123,7 +131,48 @@ module.exports = function(env, config) {
                         'http-equiv': 'Content-Type',
                         content: 'text/html; charset=UTF-8'
                     },
-                    'color-scheme': 'light dark'
+                    'color-scheme': 'light dark',
+                    description: package.description,
+                    
+                    // Extended
+                    version: package.version,
+                    author: package.author,
+                    'dc.creator': package.author,
+                    keywords: package.keywords.join(","),
+                    
+                    // Open Graph 
+                    'og:title': {
+                            property: 'og:title',
+                            content: package.name
+                    },
+                    'og:description': {
+                        property: 'og:description',
+                        content: package.description
+                    },
+                    'og:url': {
+                        property: 'og:url',
+                        content: package.homepage
+                    },
+                    'og:site_name': {
+                        property: 'og:site_name',
+                        content: 'Github Pages'
+                    },
+                    'og:image:url': {
+                        property: 'og:image:url',
+                        content: 'https://raw.githubusercontent.com/jxmked/resources/xio/assets/icons/light/Windows/Square310x310Logo.scale-400.png'
+                    },
+                    'og:image:width': {
+                        property: 'og:image:width',
+                        content: '1240'
+                    },
+                    'og:image:height': {
+                        property: 'og:image:height',
+                        content: '1240'
+                    },
+                    'og:image:alt': {
+                        property: 'og:image:alt',
+                        content: 'Logo'
+                    },
                 }
             }),
             
@@ -143,7 +192,7 @@ module.exports = function(env, config) {
                 icons: [{
                     src: CONFIG.icons.src,
                     sizes: CONFIG.icons.sizes,
-                    purpose: "any maskable"
+                    purpose: "maskable"
                 }],
                 
                 // Asset config
@@ -151,6 +200,12 @@ module.exports = function(env, config) {
                 publicPath: './', // Make sure the url starts with 
                 inject: true, // Insert html tag <link rel="manifest" ... />
                 filename: 'site.webmanifest'
+            }),
+            
+            new InterpolateHtmlPlugin({
+                "CDN": "",
+                "PUBLIC_URL": "",
+                "TITLE": package.name
             }),
         ]
     }
