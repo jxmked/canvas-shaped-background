@@ -41,7 +41,7 @@
   "short_name": "Shapes",
   "orientation": "portrait",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": ".",
   "description": "Canvas animation",
   "background_color": "#3a3a3c",
   "theme_color": "#272738"
