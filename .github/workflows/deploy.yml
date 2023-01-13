@@ -30,9 +30,6 @@ jobs:
       - name: 'Init npm'
         run: npm ci
       
-      - name: 'Install gh-pages'
-        run: npm install gh-pages
-        
       - name: 'Build App'
         run: npm run build
       
