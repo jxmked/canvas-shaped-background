@@ -100,10 +100,12 @@ module.exports = function(env, config) {
                 server: {
                     baseDir: [CONFIG.output.dir]
                 },
+
                 files: ['./' + CONFIG.output.dir + '/*'],
                 notify: false, 
                 ui: false, // Web UI for BrowserSyncPlugin
                 open:false // Open browser after initiation
+
             }),
                 
             new HtmlWebpackPlugin({
