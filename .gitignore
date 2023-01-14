@@ -106,4 +106,4 @@ dist
 
 ./dist/*.map
 ./src/*.map
-./declarations/
+declarations/*
