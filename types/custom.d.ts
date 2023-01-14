@@ -70,19 +70,19 @@ interface ShapeProperties {
      * For Self Defined Properties
      * */
     data?: object;
-    
+
     /**
-     * Mass of a shape 
-     * 
-     * Useful to get a little bit realistic when it comes 
+     * Mass of a shape
+     *
+     * Useful to get a little bit realistic when it comes
      * to collission event
      * */
-    mass?:number;
-    
+    mass?: number;
+
     /**
      * Unique ID
      * */
-    id?:number;
+    id?: number;
 }
 
 interface ShapeMethods {
@@ -145,3 +145,7 @@ interface MouseEventProps {
 }
 
 type TypeAddShape = ({ x, y }: XYCoordinate, returnValue?: boolean) => ShapeProperties;
+type TypeNumberFlip = (num: number) => number;
+type TypeRestrictVelocities = (shape: Shape) => void;
+type TypeResolveBoundaryCollisionCallback = ({ x, y }: XYCoordinate) => void;
+type TypeResolveBoundaryCollision = (shape: Shape, callback?: TypeResolveBoundaryCollisionCallback) => void;

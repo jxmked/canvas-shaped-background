@@ -22,6 +22,8 @@ module.exports = {
         '@typescript-eslint/no-useless-constructor': 'off',
 
         // We're working on DOM elements
-        '@typescript-eslint/no-non-null-assertion': 'off'
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        
+        '@typescript-eslint/no-unnecessary-condition': 'off'
     }
 };

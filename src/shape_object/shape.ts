@@ -11,11 +11,12 @@ class Shape implements ShapeInterface {
     public isOverride: ShapeProperties['isOverride'];
     public velocity: ShapeProperties['velocity'];
     public data: ShapeProperties['data'];
-    public mass: ShapeProperties['mass']
-    public id:ShapeProperties['id']
+    public mass: ShapeProperties['mass'];
+    public id: ShapeProperties['id'];
     public static countShape = 0;
 
     constructor(context: Shape2DContext, attr: ShapeProperties) {
+        // prettier-ignore
         const { 
             size, 
             color, 
@@ -30,7 +31,7 @@ class Shape implements ShapeInterface {
             data,
             mass,
             id
-        } = attr;
+       } = attr;
 
         ++Shape.countShape;
 
@@ -49,7 +50,7 @@ class Shape implements ShapeInterface {
         this.isOverride = isOverride === void 0 ? false : isOverride;
         this.velocity = velocity;
         this.data = data === void 0 ? {} : data;
-        this.mass = mass === void 0 ? 2 : mass;
+        this.mass = (thick / size) * Math.PI; //mass === void 0 ? 1 : mass;
         this.id = id === void 0 ? Shape.countShape : id;
     }
 

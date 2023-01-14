@@ -1,0 +1,2 @@
+declare const resolveBoundaryCollision: TypeResolveBoundaryCollision;
+export default resolveBoundaryCollision;

@@ -7,10 +7,10 @@ import Cross from './cross';
 
 // prettier-ignore
 export { 
-    Triangle, 
+   /* Triangle, 
     Square, 
     Hexagon, 
     Octagon, 
-    Cross, 
+    Cross,  */
     Circle, 
 };
