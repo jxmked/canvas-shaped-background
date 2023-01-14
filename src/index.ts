@@ -62,7 +62,9 @@ const ParticlesAttribute: ParticlesProps = {
     transitionSpeedXRange: [-5, 5]
 };
 
-const addShape: ({ x, y }: XYCoordinate, returnValue?: boolean) => ShapeProperties | undefined = ({ x, y }: XYCoordinate, returnValue?: boolean): ShapeProperties | undefined => {
+const addShape: TypeAddShape = ({ x, y }: XYCoordinate, returnValue?: boolean): ShapeProperties => {
+    // type ReturnTypeValue = typeof returnValue == boolean ? ShapeProperties : undefined;
+
     const attr: ShapeProperties = {
         size: helpers.getRandomInRange(ParticlesAttribute.sizeRange[0], ParticlesAttribute.sizeRange[1]),
 
@@ -86,13 +88,9 @@ const addShape: ({ x, y }: XYCoordinate, returnValue?: boolean) => ShapeProperti
         isClockwise: helpers.getRandomItem([true, false])
     };
 
-    if (returnValue) return attr;
+    if (!returnValue) Particles.push(new (helpers.getRandomItem(shapeArray))(ctx, attr) as Shape);
 
-    const shape: TypeShape = helpers.getRandomItem(shapeArray);
-
-    Particles.push(new shape(ctx, attr) as Shape);
-
-    return;
+    return attr;
 };
 
 function start(): void {
@@ -326,14 +324,3 @@ target.addEventListener('touchstart', (evt: TouchEvent) => {
         y: pageY
     });
 });
-
-
-
-/*
-const btn:HTMLButtonElement = document.getElementById("btn")! as HTMLButtonElement;
-
-
-btn.addEventListener("click", () =>{
-    alert("clicked");
-}, false)
-*/

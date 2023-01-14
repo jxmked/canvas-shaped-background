@@ -10,20 +10,27 @@ type WindowWithDataLayer = Window & {
 
 declare const window: WindowWithDataLayer;
 
+import { observeDOM } from './helpers';
+
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 window.dataLayer = window.dataLayer || [];
 
-function onClickEvent(element: HTMLElement) {
-    const url = element.getAttribute('href');
-    const text = element.innerText;
+const clickFunc: EventListenerOrEventListenerObject = (evt?: Event) => {
+    const props: HTMLAnchorElement = (evt!.currentTarget! || evt!.target!) as HTMLAnchorElement;
+    const tagName: string = props.tagName || props.nodeName;
 
-    element.addEventListener('click', function () {
-        gtag('event', 'url_clicked', {
-            addr: url,
-            text: text
-        });
+    if (tagName !== 'A' && props.getAttribute('aria-label-navigate') !== 'on-side') return;
+
+    gtag('event', 'url_clicked', {
+        addr: props.href,
+        text: encodeURIComponent(props.innerText)
     });
-}
+};
+
+const onClickEvent: (element: HTMLElement) => void = (element: HTMLElement): void => {
+    element.removeEventListener('click', clickFunc);
+    element.addEventListener('click', clickFunc);
+};
 
 // Google tag (gtag.js)
 (function (id: string) {
@@ -46,16 +53,25 @@ function onClickEvent(element: HTMLElement) {
     gtag('js', new Date());
     gtag('config', id);
 
-    document.addEventListener('DOMContentLoaded', () => {
-        Array.prototype.forEach.call(document.getElementsByClassName('gtag-on-click') as HTMLCollectionOf<HTMLElement>, (element: HTMLElement) => {
+    const eventFunc: () => void = () => {
+        Array.prototype.forEach.call(document.getElementsByClassName('listen-on-click') as HTMLCollectionOf<HTMLElement>, (element: HTMLElement) => {
             onClickEvent(element);
         });
-    });
+    };
+
+    document.addEventListener('DOMContentLoaded', eventFunc);
+
+    /**
+     * Rescan the DOM after manipulation
+     * */
+    observeDOM(document.body, eventFunc);
+
     // This should be on .env file but
     // It can be publicly available so...
 })('G-JPJZGW7PW6');
 
 export const RecordEvent = (attr: object) => {
+    // Might throw an error if we use gtag function
     window.dataLayer.push(attr);
 };
 

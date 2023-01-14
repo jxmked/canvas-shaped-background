@@ -14,13 +14,20 @@
     "lint": "npm run lint:tsc",
     "typecheck:tsc": "tsc -p tsconfig.eslint.json",
     "typecheck:tsc:w": "tsc -p tsconfig.eslint.json --watch",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' './types' --write",
+    "prettier-format:md": "prettier --config .prettierrc './*.js' --write"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jxmked/canvas-shaped-background.git"
   },
-  "keywords": ["canvas", "animation", "2d", "javascript", "opensource"],
+  "keywords": [
+      "canvas",
+      "animation",
+      "2d",
+      "javascript",
+      "opensource"
+  ],
   "author": "Jovan De Guia",
   "license": "MIT",
   "bugs": {
