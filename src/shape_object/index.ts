@@ -5,4 +5,12 @@ import Hexagon from './hexagon';
 import Octagon from './octagon';
 import Cross from './cross';
 
-export { Triangle, Square, Circle, Hexagon, Octagon, Cross };
+// prettier-ignore
+export { 
+    Triangle, 
+    Square, 
+    Hexagon, 
+    Octagon, 
+    Cross, 
+    Circle, 
+};

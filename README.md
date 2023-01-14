@@ -18,6 +18,7 @@ and does not have object to object collision.
  - Hexagon
  - Cross
  - Triangle
+ - Other polygons can be implemented easily
 
 # Installation
 

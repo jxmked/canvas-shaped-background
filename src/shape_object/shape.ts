@@ -11,10 +11,26 @@ class Shape implements ShapeInterface {
     public isOverride: ShapeProperties['isOverride'];
     public velocity: ShapeProperties['velocity'];
     public data: ShapeProperties['data'];
+    public mass: ShapeProperties['mass']
+    public id:ShapeProperties['id']
     public static countShape = 0;
 
     constructor(context: Shape2DContext, attr: ShapeProperties) {
-        const { size, color, angle, thick, style, position, rotationSpeed, isClockwise, isOverride, velocity, data } = attr;
+        const { 
+            size, 
+            color, 
+            angle, 
+            thick, 
+            style, 
+            position, 
+            rotationSpeed, 
+            isClockwise, 
+            isOverride, 
+            velocity, 
+            data,
+            mass,
+            id
+        } = attr;
 
         ++Shape.countShape;
 
@@ -32,7 +48,9 @@ class Shape implements ShapeInterface {
         this.isClockwise = isClockwise;
         this.isOverride = isOverride === void 0 ? false : isOverride;
         this.velocity = velocity;
-        this.data = data;
+        this.data = data === void 0 ? {} : data;
+        this.mass = mass === void 0 ? 2 : mass;
+        this.id = id === void 0 ? Shape.countShape : id;
     }
 
     public applyStyle(): void {

@@ -70,6 +70,19 @@ interface ShapeProperties {
      * For Self Defined Properties
      * */
     data?: object;
+    
+    /**
+     * Mass of a shape 
+     * 
+     * Useful to get a little bit realistic when it comes 
+     * to collission event
+     * */
+    mass?:number;
+    
+    /**
+     * Unique ID
+     * */
+    id?:number;
 }
 
 interface ShapeMethods {
