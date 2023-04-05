@@ -1,7 +1,7 @@
 {
   "name": "canvas-shape-background",
   "description": "Random shape animation in canvas",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,11 +22,11 @@
     "url": "git+https://github.com/jxmked/canvas-shaped-background.git"
   },
   "keywords": [
-      "canvas",
-      "animation",
-      "2d",
-      "javascript",
-      "opensource"
+    "canvas",
+    "animation",
+    "2d",
+    "javascript",
+    "opensource"
   ],
   "author": "Jovan De Guia",
   "license": "MIT",
