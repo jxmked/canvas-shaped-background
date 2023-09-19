@@ -1,3 +1,78 @@
+import { ScreenObject } from '../abstracts';
+
+export interface IShapeProperties {
+  rotation: number;
+  position: ICoordinate;
+  velocity: IVelocities;
+  color: string;
+
+  /**
+   * Sides of a polygon or radius of a circle
+   * */
+  radius: number;
+  is_solid: boolean;
+  thick: number;
+
+  style: string;
+}
+
+abstract class Shape implements ScreenObject {
+  private static _shapeID: number = 0;
+
+  constructor(public config: IShapeProperties) {
+    super();
+    Shape._shapeID++;
+  }
+
+  public get shapeID() {
+    return Shape._shapeID;
+  }
+
+  protected applyStyle(ctx: CanvasRenderingContext2D): void {
+    if (this.config.style === 'fill') {
+      ctx.fillStyle = this.config.color;
+      ctx.fill();
+      return;
+    }
+
+    ctx.fillStyle = 'none';
+    ctx.strokeStyle = this.config.color;
+    ctx.lineWidth = this.config.thick;
+    ctx.stroke();
+  }
+
+  private getAnglePoint(
+    size: IShapeProperties['radius'],
+    angle: IShapeProperties['rotation']
+  ): ICoordinate {
+    const { x, y } = this.position;
+    const rad = angle * (Math.PI / 180);
+
+    return {
+      x: x + size * Math.cos(rad),
+      y: y + size * Math.sin(rad)
+    };
+  }
+
+  protected polygonShape(endPointCount: number): ICoordinate[] {
+    const numOfSections = 360 / endPointCount;
+    const points: ICoordinate[] = [];
+
+    for (let deg = 0; deg <= 360; deg += numOfSections) {
+      points.push(this.getAnglePoint(this.size, deg + this.angle));
+    }
+
+    return points;
+  }
+
+  public abstract update(time: number = 0): void;
+  public abstract display(ctx: CanvasRenderingContext2D): void;
+  public abstract init(): void;
+}
+
+export type IShapeObject = new (config: IShapeProperties) => Shape;
+export default Shape;
+
 class Shape implements ShapeInterface {
   public size: ShapeProperties['size'];
   public color: ShapeProperties['color'];
@@ -47,42 +122,6 @@ class Shape implements ShapeInterface {
     this.data = data;
   }
 
-  public applyStyle(): void {
-    if (this.style === 'fill') {
-      this.context.fillStyle = this.color;
-      this.context.fill();
-      return;
-    }
-
-    this.context.strokeStyle = this.color;
-    this.context.lineWidth = this.thick;
-    this.context.stroke();
-  }
-
-  public getAnglePoint(size: number, angle: ShapeProperties['angle']): XYCoordinate {
-    const { x, y } = this.position;
-    const rad: number = angle * (Math.PI / 180);
-    return {
-      x: x + size * Math.cos(rad),
-      y: y + size * Math.sin(rad)
-    };
-  }
-
-  public polygonShape(endPointCount: number): void {
-    const numOfSections: number = 360 / endPointCount;
-    const midpoint: XYCoordinate = this.getAnglePoint(this.size, 0 + this.angle);
-
-    this.context.beginPath();
-    this.context.moveTo(midpoint.x, midpoint.y);
-
-    for (let deg = numOfSections; deg <= 360 - numOfSections; deg += numOfSections) {
-      const endpoint: XYCoordinate = this.getAnglePoint(this.size, deg + this.angle);
-      this.context.lineTo(endpoint.x, endpoint.y);
-    }
-
-    this.context.closePath();
-  }
-
   public move({ x, y }: XYCoordinate): void {
     this.position.x += x;
     this.position.y += y;
@@ -104,5 +143,3 @@ abstract class AbstractShape extends Shape {
   abstract get type(): string;
   abstract draw(): void;
 }
-
-export default AbstractShape;
