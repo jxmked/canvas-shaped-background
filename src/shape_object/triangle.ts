@@ -1,5 +1,6 @@
 import Shape from './shape';
 
+/*
 class Triangle extends Shape {
   public get type(): string {
     return 'triangle';
@@ -12,3 +13,4 @@ class Triangle extends Shape {
 }
 
 export default Triangle;
+*/

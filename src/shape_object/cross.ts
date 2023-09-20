@@ -1,41 +1,44 @@
 import Shape from './shape';
 
-class Cross extends Shape {
-  constructor(context: Shape2DContext, attr: ShapeProperties) {
-    super(context, attr);
-    // We can't have different styling for this
-    this.style = 'stroke';
+export default class Cross extends Shape {
+  public init(): void {
+    const ctx = this.path2D;
+    const area = this.pathDimension;
+
+    this.path2D.moveTo(area.w * 0.4, 0);
+    this.path2D.lineTo(area.w * 0.4, area.h * 0.4);
+    this.path2D.lineTo(0, area.h * 0.4);
+    this.path2D.lineTo(0, area.h * 0.6);
+    this.path2D.lineTo(area.w * 0.4, area.h * 0.6);
+    this.path2D.lineTo(area.w * 0.4, area.h);
+    this.path2D.lineTo(area.w * 0.6, area.h);
+    this.path2D.lineTo(area.w * 0.6, area.h * 0.6);
+    this.path2D.lineTo(area.w, area.h * 0.6);
+    this.path2D.lineTo(area.w, area.h * 0.4);
+    this.path2D.lineTo(area.w * 0.6, area.h * 0.4);
+    this.path2D.lineTo(area.w * 0.6, 0);
+    this.path2D.closePath();
   }
 
-  public get type(): string {
-    return 'cross';
+  public update(time: number = 0): void {
+    const { velocity, position } = this.config;
+
+    position.x += velocity.x;
+    position.y += velocity.y;
+
+    if (velocity.rot !== void 0) this.config.rotation += velocity.rot;
   }
 
-  public draw(): void {
-    // Close Center
-    const closeBottomRight = this.getAnglePoint(this.size, 45 + this.angle);
-    const closeBottomLeft = this.getAnglePoint(this.size, 135 + this.angle);
-    const closeTopLeft = this.getAnglePoint(this.size, 225 + this.angle);
-    const closeTopRight = this.getAnglePoint(this.size, 315 + this.angle);
+  public display(ctx: CanvasRenderingContext2D): void {
+    const { position, scale } = this.config;
 
-    this.context.beginPath();
+    ctx.save();
+    ctx.scale(scale, scale);
+    ctx.translate(position.x, position.y);
+    ctx.rotate(this.config.rotation);
+    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
+    this.applyStyle(ctx, true);
 
-    this.context.moveTo(this.position.x, this.position.y);
-    this.context.lineTo(closeBottomRight.x, closeBottomRight.y);
-    this.context.moveTo(this.position.x, this.position.y);
-    this.context.lineTo(closeBottomLeft.x, closeBottomLeft.y);
-    this.context.moveTo(this.position.x, this.position.y);
-    this.context.lineTo(closeTopLeft.x, closeTopLeft.y);
-    this.context.moveTo(this.position.x, this.position.y);
-    this.context.lineTo(closeTopRight.x, closeTopRight.y);
-
-    // To make sure that the cursor will stay at the center
-    this.context.moveTo(this.position.x, this.position.y);
-
-    this.context.closePath();
-
-    this.applyStyle();
+    ctx.restore();
   }
 }
-
-export default Cross;

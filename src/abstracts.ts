@@ -13,3 +13,9 @@ export abstract class ScreenObject {
   public abstract display(ctx: CanvasRenderingContext2D): void;
   public abstract init(): void;
 }
+
+export interface MovingObject {
+  position: ICoordinates;
+  velocity: IVelocities;
+  rotation: number;
+}

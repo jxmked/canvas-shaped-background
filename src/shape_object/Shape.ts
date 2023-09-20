@@ -1,4 +1,4 @@
-import { ScreenObject } from '../abstracts';
+import { ScreenObject, MovingObject } from '../abstracts';
 
 export interface IShapeProperties {
   rotation: number;
@@ -7,9 +7,9 @@ export interface IShapeProperties {
   color: string;
 
   /**
-   * Sides of a polygon or radius of a circle
+   * Scale from 100px
    * */
-  radius: number;
+  scale: number;
   is_solid: boolean;
   thick: number;
 
@@ -18,51 +18,39 @@ export interface IShapeProperties {
 
 abstract class Shape extends ScreenObject {
   private static _shapeID: number = 0;
+  protected path2D: Path2D;
+  protected pathDimension: IArea;
 
   constructor(public config: IShapeProperties) {
     super();
+
     Shape._shapeID++;
+    this.pathDimension = {
+      h: 100,
+      w: 100
+    };
+    this.path2D = new Path2D();
   }
 
   public get shapeID() {
     return Shape._shapeID;
   }
 
-  protected applyStyle(ctx: CanvasRenderingContext2D): void {
+  protected applyStyle(ctx: CanvasRenderingContext2D, usePath2D: boolean): void {
     if (this.config.style === 'fill') {
       ctx.fillStyle = this.config.color;
-      ctx.fill();
+
+      if (usePath2D) ctx.fill(this.path2D);
+      else ctx.fill();
+
       return;
     }
 
     ctx.fillStyle = 'none';
     ctx.strokeStyle = this.config.color;
     ctx.lineWidth = this.config.thick;
-    ctx.stroke();
-  }
-
-  private getAnglePoint(
-    size: IShapeProperties['radius'],
-    angle: IShapeProperties['rotation']
-  ): ICoordinates {
-    const { x, y } = this.config.position;
-    const rad = angle * (Math.PI / 180);
-
-    return {
-      x: x + size * Math.cos(rad),
-      y: y + size * Math.sin(rad)
-    };
-  }
-
-  protected polygonShape(endPointCount: number): ICoordinates[] {
-    const numOfSections = 360 / endPointCount;
-    const points: ICoordinates[] = [];
-
-    for (let deg = 0; deg <= 360; deg += numOfSections) {
-      points.push(this.getAnglePoint(this.config.radius, deg + this.config.rotation));
-    }
-
-    return points;
+    if (usePath2D) ctx.stroke(this.path2D);
+    else ctx.stroke();
   }
 
   public abstract update(time: number): void;

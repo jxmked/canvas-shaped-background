@@ -11,6 +11,9 @@ body {
   z-index: -1;
 }
 
+#overlayed-canvas {
+  display: none;
+}
 /**
 #canvas-container,
 #overlayed-canvas {
