@@ -9,7 +9,7 @@ export abstract class ScreenObject {
     return this._is_visible;
   }
 
-  public abstract update(time: number = 0): void;
+  public abstract update(time: number): void;
   public abstract display(ctx: CanvasRenderingContext2D): void;
   public abstract init(): void;
 }

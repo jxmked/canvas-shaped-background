@@ -1,20 +1,23 @@
-import Shape from './shape';
+import Shape from "./Shape";
 
-class Circle extends Shape {
-  public get type(): string {
-    return 'circle';
+export default class Circle extends Shape {
+  public init(): void {
+
   }
+  
+  public update(time: number = 0): void {
+   const { velocity, position, rotation } = this.config;
+   
+   
+  }
+  
+  public display(ctx: CanvasRenderingContext2D): void {
+    const { radius, position } = this.config;
 
-  public draw(): void {
-    const { x, y } = this.position;
+    ctx.beginPath();
+    ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
+    ctx.closePath();
 
-    this.context.beginPath();
-
-    this.context.arc(x, y, this.size, 0, 2 * Math.PI);
-    this.context.closePath();
-
-    this.applyStyle();
+    this.applyStyle(ctx);
   }
 }
-
-export default Circle;
