@@ -30,12 +30,12 @@ export default class Cross extends Shape {
   }
 
   public display(ctx: CanvasRenderingContext2D): void {
-    const { position, scale } = this.config;
+    const { position, scale, rotation } = this.config;
 
     ctx.save();
     ctx.scale(scale, scale);
     ctx.translate(position.x, position.y);
-    ctx.rotate(this.config.rotation);
+    ctx.rotate(rotation);
     ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
     this.applyStyle(ctx, true);
 

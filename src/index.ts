@@ -3,13 +3,17 @@ import '@total-typescript/ts-reset';
 import * as ShapeArray from './shape_object/index';
 
 import MainObject from './main';
-import Circle from './shape_object/circle';
 
 const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 
 const main = new MainObject(canvas);
 
 main.init();
+
+const shapes = Object.values(ShapeArray);
+
+
+/*
 
 const circ = new Circle({
   rotation: 0,
@@ -42,9 +46,9 @@ const cir2 = new Circle({
     y: 500
   }
 });
-
+*/
 main.start();
-
+/*
 main.insertLayer('1', circ);
-main.insertLayer('2', cir2);
+main.insertLayer('2', cir2); */
 main.initializeLayers();
