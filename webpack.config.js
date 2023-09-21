@@ -80,13 +80,6 @@ let prodPlugins = [
     publicPath: 'canvas-shaped-background/',
     fileName: 'asset-manifest.json'
   })
-
-  /*
-  new CopyPlugin({
-      patterns: [
-        { from: 'src/sw.js', to: 'sw.js' },
-      ],
-    }), */
 ];
 
 module.exports = function (env, config) {
@@ -332,7 +325,12 @@ module.exports = function (env, config) {
         APP_VERSION: package.version,
         APP_MODE: devMode ? 'development' : 'production',
         BASE_URL: package.homepage
-      })
+      }),
+      devMode && new CopyPlugin({
+        patterns: [
+          { from: `src/${CONFIG.favicon}`, to: CONFIG.favicon },
+        ],
+      }),
     ].concat(prodPlugins)
   };
 };

@@ -11,11 +11,7 @@ export default class Triangle extends Shape {
       const x = area.w / 2 - (area.w / 2) * Math.cos(angle);
       const y = area.h / 2 - (area.h / 2) * Math.sin(angle);
 
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
+      (i === 0 ? ctx.moveTo : ctx.lineTo).call(ctx, x, y);
     }
 
     this.path2D.closePath();
