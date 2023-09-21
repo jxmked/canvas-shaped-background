@@ -326,11 +326,6 @@ module.exports = function (env, config) {
         APP_MODE: devMode ? 'development' : 'production',
         BASE_URL: package.homepage
       }),
-      devMode && new CopyPlugin({
-        patterns: [
-          { from: `src/${CONFIG.favicon}`, to: CONFIG.favicon },
-        ],
-      }),
     ].concat(prodPlugins)
   };
 };
