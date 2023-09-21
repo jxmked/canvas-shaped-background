@@ -1,24 +1,19 @@
 import Shape from './shape';
+import Polygonator from '../lib/polygonator';
 
 export default class Square extends Shape {
   public init(): void {
     const ctx = this.path2D;
-    const area = this.pathDimension;
-    const numOfSides = 4;
+    const area = {
+      h: this.pathDimension.h * this.config.scale,
+      w: this.pathDimension.w * this.config.scale
+    } satisfies IArea;
 
-    for (let i = 0; i < numOfSides; i++) {
-      const angle = (Math.PI / (numOfSides / 2)) * i;
-      const x = area.w / 2 - (area.w / 2) * Math.cos(angle);
-      const y = area.h / 2 - (area.h / 2) * Math.sin(angle);
-
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
+    for (const point of Polygonator(4, area)) {
+      (point.index === 0 ? ctx.moveTo : ctx.lineTo).call(ctx, point.x, point.y);
     }
 
-    this.path2D.closePath();
+    ctx.closePath();
   }
 
   public update(time: number = 0): void {
@@ -37,7 +32,10 @@ export default class Square extends Shape {
     ctx.scale(scale, scale);
     ctx.translate(position.x, position.y);
     ctx.rotate(rotation);
-    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
+    ctx.translate(
+      -((this.pathDimension.w * scale) / 2),
+      -((this.pathDimension.h * scale) / 2)
+    );
     this.applyStyle(ctx, true);
 
     ctx.restore();

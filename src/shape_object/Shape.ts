@@ -36,6 +36,10 @@ abstract class Shape extends ScreenObject {
     return Shape._shapeID;
   }
 
+  public get area() {
+    return this.pathDimension;
+  }
+
   protected applyStyle(ctx: CanvasRenderingContext2D, usePath2D: boolean): void {
     if (this.config.style === 'fill') {
       ctx.fillStyle = this.config.color;
