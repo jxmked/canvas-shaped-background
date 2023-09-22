@@ -26,6 +26,8 @@ export default class Square extends Shape {
   }
 
   public display(ctx: CanvasRenderingContext2D): void {
+    if (this.is_hidden) return;
+
     const { position, scale, rotation } = this.config;
 
     ctx.save();

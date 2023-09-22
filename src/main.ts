@@ -3,6 +3,7 @@ import Shape from './shape_object/shape';
 import { flipNum } from './utils';
 
 export type IShapeCollided = (side: number) => void;
+export type IExtendedAnimation = (ctx: CanvasRenderingContext2D) => void;
 
 export default class Main {
   private ctx: CanvasRenderingContext2D;
@@ -10,12 +11,18 @@ export default class Main {
   private layers: Map<string, Shape>;
   private initializedLayers: string[];
   private static wallAdjustment = -80;
+  private beforeExtendedAnim: IExtendedAnimation;
+  private afterExtendedAnim: IExtendedAnimation;
 
   constructor(public canvas: HTMLCanvasElement) {
+    this.init();
+
     this.ctx = this.canvas.getContext('2d')!;
 
     this.layers = new Map();
     this.initializedLayers = [];
+    this.beforeExtendedAnim = (ctx: CanvasRenderingContext2D) => {};
+    this.afterExtendedAnim = (ctx: CanvasRenderingContext2D) => {};
   }
 
   private wallCollisionChecker(layer: Shape, collidedCallback: IShapeCollided): void {
@@ -43,7 +50,7 @@ export default class Main {
     }
   }
 
-  public init(): void {
+  private init(): void {
     try {
       const compStyle = getComputedStyle(this.canvas);
 
@@ -62,6 +69,8 @@ export default class Main {
     const { width: c_w, height: c_h } = this.canvas;
     this.ctx.clearRect(0, 0, c_w, c_h);
     this.ctx.imageSmoothingEnabled = false;
+
+    this.beforeExtendedAnim.call(this.beforeExtendedAnim, this.ctx);
 
     for (const [_, layer] of this.layers) {
       layer.update(0);
@@ -98,6 +107,8 @@ export default class Main {
       layer.display(this.ctx);
     }
 
+    this.afterExtendedAnim.call(this.afterExtendedAnim, this.ctx);
+
     raf(this.animate.bind(this));
   }
 
@@ -111,5 +122,19 @@ export default class Main {
       layer.init();
       this.initializedLayers.push(key);
     }
+  }
+
+  /**
+   * Perfect for background
+   * */
+  public beforeLayersAnimation(callback: IExtendedAnimation): void {
+    this.beforeExtendedAnim = callback;
+  }
+
+  /**
+   * Perfect for foreground
+   * */
+  public afterLayersAnimation(callback: IExtendedAnimation): void {
+    this.afterExtendedAnim = callback;
   }
 }

@@ -23,6 +23,8 @@ export default class Circle extends Shape {
   }
 
   public display(ctx: CanvasRenderingContext2D): void {
+    if (this.is_hidden) return;
+
     const { position, scale, rotation } = this.config;
 
     ctx.save();

@@ -15,6 +15,7 @@ export default class Octagon extends Shape {
 
     ctx.closePath();
   }
+
   public update(time: number = 0): void {
     const { velocity, position } = this.config;
 
@@ -25,6 +26,8 @@ export default class Octagon extends Shape {
   }
 
   public display(ctx: CanvasRenderingContext2D): void {
+    if (this.is_hidden) return;
+
     const { position, scale, rotation } = this.config;
 
     ctx.save();

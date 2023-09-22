@@ -20,6 +20,7 @@ abstract class Shape extends ScreenObject {
   private static _shapeID: number = 0;
   protected path2D: Path2D;
   protected pathDimension: IArea;
+  public is_hidden: boolean;
 
   constructor(public config: IShapeProperties) {
     super();
@@ -29,7 +30,10 @@ abstract class Shape extends ScreenObject {
       h: 100,
       w: 100
     };
+
     this.path2D = new Path2D();
+
+    this.is_hidden = false;
   }
 
   public get shapeID() {
