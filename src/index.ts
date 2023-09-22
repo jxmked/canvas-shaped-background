@@ -18,7 +18,8 @@ const genRand = () => {
   return Math.random() / 1000;
 };
 
-const randomColors = ['#738678', '#A89F91', '#6D7E7D', '#8E847C', '#5C6E71'];
+//const randomColors = ['#738678', '#A89F91', '#6D7E7D', '#8E847C', '#5C6E71'];
+const randomColors = ['#4ab098', '#ea5e5d', '#f8ba3f', '#3f82f3'];
 
 let i = 0;
 
@@ -34,8 +35,8 @@ function insert() {
   const config = {
     rotation: 0,
     velocity: {
-      x: width * genRand(),
-      y: height * genRand(),
+      x: flipper(width * genRand()),
+      y: flipper(height * genRand()),
       rot: flipper(100) * genRand()
     },
     color: getRandomItem(randomColors),

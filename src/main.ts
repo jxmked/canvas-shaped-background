@@ -70,15 +70,27 @@ export default class Main {
         // top and bottom
         if ((sides & 0b1010) > 0) {
           velo.y = flipNum(velo.y);
-          pos.y =
-            ((sides & 0b1000) > 0 ? area.h * scale + wAdj : c_h) - (area.h * scale) / 2;
+
+          pos.y = c_h;
+
+          if ((sides & 0b1000) > 0) {
+            pos.y = area.h * scale + Main.wallAdjustment;
+          }
+
+          pos.y -= (area.h * scale) / 2;
         }
 
         // left and right
         if ((sides & 0b0101) > 0) {
           velo.x = flipNum(velo.x);
-          pos.x =
-            ((sides & 0b0001) > 0 ? area.w * scale + wAdj : c_w) - (area.w * scale) / 2;
+
+          pos.x = c_w;
+
+          if ((sides & 0b0001) > 0) {
+            pos.x = area.w * scale + Main.wallAdjustment;
+          }
+
+          pos.x -= (area.w * scale) / 2;
         }
       });
 

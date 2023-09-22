@@ -13,10 +13,6 @@ body {
   background: transparent;
 }
 
-#overlayed-canvas {
-  display: none;
-}
-/**
 #canvas-container,
 #overlayed-canvas {
   width: 100vw;
@@ -28,10 +24,9 @@ body {
 }
 #backdrop {
   z-index: 0;
-  background-color: rgba(44, 44, 46, 0.6);
+  background-color: rgba(44, 44, 46, 0.3);
   backdrop-filter: blur(8px);
   width: 100vw;
   height: 100vh;
   position: fixed;
 }
-**/
