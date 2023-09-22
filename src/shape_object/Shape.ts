@@ -1,4 +1,4 @@
-import { ScreenObject, MovingObject } from '../abstracts';
+import { ScreenObject } from '../abstracts';
 
 export interface IShapeProperties {
   rotation: number;

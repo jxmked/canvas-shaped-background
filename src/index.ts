@@ -12,8 +12,6 @@ main.init();
 
 const shapes = Object.values(ShapeArray);
 
-const Circle = ShapeArray.Triangle;
-
 const genRand = () => {
   return Math.random() / 1000;
 };

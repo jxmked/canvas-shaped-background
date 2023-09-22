@@ -2,17 +2,35 @@ body {
   margin: 0;
   padding: 0;
   background-color: rgb(26, 43, 51, 1);
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+#canvas,
+#canvas-container {
+  padding: 0;
+  margin: 0;
+
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 #canvas {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
   z-index: -1;
-  background: transparent;
 }
 
+#overlayed-canvas,
+#backdrop {
+  display: none;
+}
+
+/**
 #canvas-container,
 #overlayed-canvas {
   width: 100vw;
@@ -30,3 +48,5 @@ body {
   height: 100vh;
   position: fixed;
 }
+
+*/

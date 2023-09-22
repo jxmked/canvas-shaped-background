@@ -1,5 +1,4 @@
 import raf from 'raf';
-import { ScreenObject } from './abstracts';
 import Shape from './shape_object/shape';
 import { flipNum } from './utils';
 
@@ -8,13 +7,11 @@ export type IShapeCollided = (side: number) => void;
 export default class Main {
   private ctx: CanvasRenderingContext2D;
 
-  private parent: Window;
   private layers: Map<string, Shape>;
   private initializedLayers: string[];
-  private static wallAdjustment = -50;
+  private static wallAdjustment = -80;
 
   constructor(public canvas: HTMLCanvasElement) {
-    this.parent = window;
     this.ctx = this.canvas.getContext('2d')!;
 
     this.layers = new Map();
@@ -47,8 +44,14 @@ export default class Main {
   }
 
   public init(): void {
-    this.canvas.width = this.parent.innerWidth * 2;
-    this.canvas.height = this.parent.innerHeight * 2;
+    try {
+      const compStyle = getComputedStyle(this.canvas);
+
+      this.canvas.width = parseFloat(compStyle.width) * 2;
+      this.canvas.height = parseFloat(compStyle.height) * 2;
+    } catch (err) {
+      throw new Error('Failed to get actual screen size');
+    }
   }
 
   public start(): void {
@@ -57,12 +60,10 @@ export default class Main {
 
   private animate(): void {
     const { width: c_w, height: c_h } = this.canvas;
-    const wAdj = Main.wallAdjustment;
-
     this.ctx.clearRect(0, 0, c_w, c_h);
     this.ctx.imageSmoothingEnabled = false;
 
-    for (const [key, layer] of this.layers) {
+    for (const [_, layer] of this.layers) {
       layer.update(0);
       this.wallCollisionChecker(layer, (sides) => {
         const { position: pos, velocity: velo, scale } = layer.config;
