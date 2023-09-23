@@ -66,41 +66,42 @@ export default class Main {
   }
 
   private animate(): void {
-    const { width: c_w, height: c_h } = this.canvas;
-    this.ctx.clearRect(0, 0, c_w, c_h);
+    const { width, height } = this.canvas;
+    this.ctx.clearRect(0, 0, width, height);
     this.ctx.imageSmoothingEnabled = false;
 
     this.beforeExtendedAnim.call(this.beforeExtendedAnim, this.ctx);
 
     for (const [_, layer] of this.layers) {
       layer.update(0);
+
       this.wallCollisionChecker(layer, (sides) => {
-        const { position: pos, velocity: velo, scale } = layer.config;
+        const { position, velocity, scale } = layer.config;
         const area = layer.area;
         // top and bottom
         if ((sides & 0b1010) > 0) {
-          velo.y = flipNum(velo.y);
+          velocity.y = flipNum(velocity.y);
 
-          pos.y = c_h;
+          position.y = height;
 
           if ((sides & 0b1000) > 0) {
-            pos.y = area.h * scale + Main.wallAdjustment;
+            position.y = area.h * scale + Main.wallAdjustment;
           }
 
-          pos.y -= (area.h * scale) / 2;
+          position.y -= (area.h * scale) / 2;
         }
 
         // left and right
         if ((sides & 0b0101) > 0) {
-          velo.x = flipNum(velo.x);
+          velocity.x = flipNum(velocity.x);
 
-          pos.x = c_w;
+          position.x = width;
 
           if ((sides & 0b0001) > 0) {
-            pos.x = area.w * scale + Main.wallAdjustment;
+            position.x = area.w * scale + Main.wallAdjustment;
           }
 
-          pos.x -= (area.w * scale) / 2;
+          position.x -= (area.w * scale) / 2;
         }
       });
 

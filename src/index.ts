@@ -3,7 +3,7 @@ import '@total-typescript/ts-reset';
 import * as ShapeArray from './shape_object/index';
 import MainObject from './main';
 import { getRandomItem, getRandomInRange, flipper } from './utils';
-import AdjustedCoor from './lib/adjusment-coordinates';
+import AdjustedCoor from './lib/adjustment-coordinates';
 
 const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 const tapCanvas = document.querySelector('#overlayed-canvas') as HTMLCanvasElement;
@@ -39,7 +39,7 @@ function insert() {
     color: getRandomItem(randomColors),
     scale: 400 * genRand() + 1,
     is_solid: Math.random() > 0.5,
-    thick: 8,
+    thick: 5,
     style: Math.random() > 0.5 ? 'stroke' : 'fill',
     position: {
       x: getRandomInRange(0, width),
@@ -67,6 +67,7 @@ console.log(`Viewing ${shapeCount} moving items.`);
 const translator = new AdjustedCoor(tapCanvas);
 
 const activeKeys = [];
+
 function touchStart(evt: TouchEvent) {}
 
 function touchMove(evt: TouchEvent) {}

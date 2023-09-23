@@ -4,8 +4,8 @@ export default class Cross extends Shape {
   public init(): void {
     const ctx = this.path2D;
     let { w, h } = this.pathDimension;
-    w *= this.config.scale;
-    h *= this.config.scale;
+    //    w *= this.config.scale;
+    //  h *= this.config.scale;
 
     ctx.moveTo(w * 0.4, 0);
     ctx.lineTo(w * 0.4, h * 0.4);
@@ -40,10 +40,7 @@ export default class Cross extends Shape {
     ctx.scale(scale, scale);
     ctx.translate(position.x, position.y);
     ctx.rotate(rotation);
-    ctx.translate(
-      -((this.pathDimension.w * scale) / 2),
-      -((this.pathDimension.h * scale) / 2)
-    );
+    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
     this.applyStyle(ctx, true);
 
     ctx.restore();

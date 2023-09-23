@@ -5,8 +5,8 @@ export default class Circle extends Shape {
     this.path2D.ellipse(
       0,
       0,
-      (this.pathDimension.w * this.config.scale) / 2,
-      (this.pathDimension.h * this.config.scale) / 2,
+      this.pathDimension.w / 2,
+      this.pathDimension.h / 2,
       0,
       0,
       2 * Math.PI
