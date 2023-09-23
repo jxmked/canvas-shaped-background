@@ -7,11 +7,11 @@ export default class {
     this.factor = this.canvas.width / this.rect.width;
   }
 
-  public translateX(x: number): number {
+  public x(x: number): number {
     return this.factor * (x - this.rect.left);
   }
 
-  public translateY(y: number): number {
+  public y(y: number): number {
     return this.factor * (y - this.rect.top);
   }
 }

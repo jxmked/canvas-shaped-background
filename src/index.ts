@@ -4,6 +4,7 @@ import * as ShapeArray from './shape_object/index';
 import MainObject from './main';
 import { getRandomItem, getRandomInRange, flipper } from './utils';
 import AdjustedCoor from './lib/adjustment-coordinates';
+import TapAnimator from './tap-animator';
 
 const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 const tapCanvas = document.querySelector('#overlayed-canvas') as HTMLCanvasElement;
@@ -64,11 +65,31 @@ console.log(`Viewing ${shapeCount} moving items.`);
  * Tap animation
  * Tap animator
  * */
-const translator = new AdjustedCoor(tapCanvas);
 
-const activeKeys = [];
+const tapCtx = tapCanvas.getContext('2d')!;
 
-function touchStart(evt: TouchEvent) {}
+const translate = new AdjustedCoor(tapCanvas);
+
+const activeKeys: number[] = [];
+const touchAnimation: TapAnimator[] = [];
+
+function touchStart(evt: TouchEvent) {
+  for (const { identifier, clientX, clientY } of Array.from(evt.touches)) {
+    // Skip registered ID
+    if (identifier in activeKeys) continue;
+
+    const ta = new TapAnimator(identifier);
+    ta.down({
+      x: translate.x(clientX),
+      y: translate.y(clientY)
+    });
+    ta.update(0);
+
+    ta.display(tapCtx);
+
+    activeKeys.push(identifier);
+  }
+}
 
 function touchMove(evt: TouchEvent) {}
 
