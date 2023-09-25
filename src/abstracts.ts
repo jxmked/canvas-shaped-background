@@ -1,3 +1,5 @@
+import TapAnimator from './tap-animator';
+
 export abstract class ScreenObject {
   private _is_visible: boolean;
 
@@ -18,4 +20,11 @@ export interface MovingObject {
   position: ICoordinates;
   velocity: IVelocities;
   rotation: number;
+}
+
+export abstract class MovableScreenObject extends ScreenObject {
+  public abstract update(time: number): void;
+  public abstract display(ctx: CanvasRenderingContext2D): void;
+  public abstract init(): void;
+  public abstract move({ x, y }: ICoordinates): void;
 }

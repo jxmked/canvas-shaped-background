@@ -14,12 +14,14 @@ export default class Circle extends Shape {
   }
 
   public update(time: number = 0): void {
-    const { velocity, position } = this.config;
+    const { velocity, position, is_movable } = this.config;
+
+    if (velocity.rot !== void 0) this.config.rotation += velocity.rot;
+
+    if (is_movable) return;
 
     position.x += velocity.x;
     position.y += velocity.y;
-
-    if (velocity.rot !== void 0) this.config.rotation += velocity.rot;
   }
 
   public display(ctx: CanvasRenderingContext2D): void {

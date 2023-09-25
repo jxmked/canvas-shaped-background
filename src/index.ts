@@ -2,19 +2,16 @@ import './styles/index.css';
 import '@total-typescript/ts-reset';
 import * as ShapeArray from './shape_object/index';
 import MainObject from './main';
-import { getRandomItem, getRandomInRange, flipper } from './utils';
+import { getRandomItem, getRandomInRange, flipper, random as genRand } from './utils';
 import AdjustedCoor from './lib/adjustment-coordinates';
 import TapAnimator from './tap-animator';
+import { randomColors } from './constants';
 
 const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 const tapCanvas = document.querySelector('#overlayed-canvas') as HTMLCanvasElement;
 
 const main = new MainObject(canvas);
 const shapes = Object.values(ShapeArray);
-
-const genRand = () => Math.random() / 1000;
-
-const randomColors = ['#4ab098', '#ea5e5d', '#f8ba3f', '#3f82f3'];
 
 let i = 0;
 
@@ -45,7 +42,8 @@ function insert() {
     position: {
       x: getRandomInRange(0, width),
       y: getRandomInRange(0, height)
-    }
+    },
+    is_movable: false
   };
 
   const shapy = new Shape(config);
@@ -70,31 +68,84 @@ const tapCtx = tapCanvas.getContext('2d')!;
 
 const translate = new AdjustedCoor(tapCanvas);
 
+const activeTapinator: ReturnType<typeof TapAnimator>[] = [];
 const activeKeys: number[] = [];
-const touchAnimation: TapAnimator[] = [];
 
 function touchStart(evt: TouchEvent) {
+  evt.preventDefault();
+
   for (const { identifier, clientX, clientY } of Array.from(evt.touches)) {
     // Skip registered ID
     if (identifier in activeKeys) continue;
 
-    const ta = new TapAnimator(identifier);
+    const ta = TapAnimator(identifier, performance.now());
+
     ta.down({
       x: translate.x(clientX),
       y: translate.y(clientY)
     });
-    ta.update(0);
-
-    ta.display(tapCtx);
-
+    ta.init();
+    activeTapinator.push(ta);
     activeKeys.push(identifier);
   }
 }
 
-function touchMove(evt: TouchEvent) {}
+function touchMove(evt: TouchEvent) {
+  evt.preventDefault();
 
-function touchEnd(evt: TouchEvent) {}
+  for (const { identifier, clientX, clientY } of Array.from(evt.touches)) {
+    // Skip unregistered ID
+    for (const ta of activeTapinator) {
+      if (ta.to_be_kill) continue;
+      if (identifier !== ta.id) continue;
+
+      ta.move({
+        x: translate.x(clientX),
+        y: translate.y(clientY)
+      });
+    }
+  }
+}
+
+function touchEnd(evt: TouchEvent) {
+  evt.preventDefault();
+
+  const currentActiveKeys = Array.from(evt.touches).map((x) => x.identifier);
+
+  for (const ta of activeTapinator) {
+    if (ta.to_be_kill) continue;
+    if (currentActiveKeys.indexOf(ta.id) === -1) ta.up();
+  }
+
+  // Delete none active identifier
+  for (const index in activeKeys) {
+    if (currentActiveKeys.indexOf(activeKeys[index]) === -1) {
+      activeKeys.splice(Number(index), 1);
+    }
+  }
+}
 
 tapCanvas.addEventListener('touchstart', touchStart);
 tapCanvas.addEventListener('touchmove', touchMove);
 tapCanvas.addEventListener('touchend', touchEnd);
+
+// Animate events
+
+main.afterLayersAnimation((ctx) => {
+  const time = performance.now();
+  tapCtx.clearRect(0, 0, canvas.width, canvas.height);
+  tapCtx.imageSmoothingEnabled = false;
+  // We will rendering it into other context.
+
+  for (const index in activeTapinator) {
+    const ta = activeTapinator[index];
+
+    if (ta.kill_now) {
+      activeTapinator.splice(Number(index), 1);
+      continue;
+    }
+
+    ta.update(time);
+    ta.display(tapCtx);
+  }
+});

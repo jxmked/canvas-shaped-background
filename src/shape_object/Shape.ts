@@ -1,4 +1,4 @@
-import { ScreenObject } from '../abstracts';
+import { ScreenObject, MovableScreenObject } from '../abstracts';
 
 export interface IShapeProperties {
   rotation: number;
@@ -14,9 +14,11 @@ export interface IShapeProperties {
   thick: number;
 
   style: string;
+
+  is_movable: boolean;
 }
 
-abstract class Shape extends ScreenObject {
+abstract class Shape extends ScreenObject implements MovableScreenObject {
   private static _shapeID: number = 0;
   protected path2D: Path2D;
   protected pathDimension: IArea;
@@ -42,6 +44,10 @@ abstract class Shape extends ScreenObject {
 
   public get area() {
     return this.pathDimension;
+  }
+
+  public move({ x, y }: ICoordinates): void {
+    this.config.position = { x, y };
   }
 
   protected applyStyle(ctx: CanvasRenderingContext2D, usePath2D: boolean): void {
