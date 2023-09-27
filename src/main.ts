@@ -73,7 +73,7 @@ export default class Main {
     this.beforeExtendedAnim.call(this.beforeExtendedAnim, this.ctx);
 
     for (const [_, layer] of this.layers) {
-      layer.update(0);
+      layer.update();
 
       this.wallCollisionChecker(layer, (sides) => {
         const { position, velocity, scale } = layer.config;

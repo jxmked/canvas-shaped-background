@@ -45,8 +45,7 @@ function insert() {
     position: {
       x: getRandomInRange(0, canvas.width),
       y: getRandomInRange(0, canvas.height)
-    },
-    is_movable: false
+    }
   };
 
   const shapy = new Shape(config);

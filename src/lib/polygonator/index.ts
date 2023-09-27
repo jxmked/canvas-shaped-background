@@ -6,9 +6,10 @@ export default (numOfSides: number, area: IArea): IPolygonatorReturnType[] => {
   const points: IPolygonatorReturnType[] = [];
   const half_w = area.w / 2;
   const half_h = area.h / 2;
+  const init_angle = Math.PI / (numOfSides / 2);
 
   for (let i = 0; i < numOfSides; i++) {
-    const angle = (Math.PI / (numOfSides / 2)) * i;
+    const angle = init_angle * i;
     points.push({
       index: i,
       x: half_w - half_w * Math.cos(angle),

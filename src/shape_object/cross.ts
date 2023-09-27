@@ -22,20 +22,7 @@ export default class Cross extends Shape {
     ctx.closePath();
   }
 
-  public update(): void {
-    const { velocity, position, is_movable } = this.config;
-
-    if (velocity.rot !== void 0) this.config.rotation += velocity.rot;
-
-    if (is_movable) return;
-
-    position.x += velocity.x;
-    position.y += velocity.y;
-  }
-
   public display(ctx: CanvasRenderingContext2D): void {
-    if (this.is_hidden) return;
-
     const { position, scale, rotation } = this.config;
 
     ctx.save();

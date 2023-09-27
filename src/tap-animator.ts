@@ -59,7 +59,6 @@ export default class TapAnimator extends MovableScreenObject {
       thick: 5,
       style: Math.random() > 0.5 ? 'stroke' : 'fill',
       position: this.coor,
-      is_movable: true,
       scale
     };
 
@@ -117,7 +116,7 @@ export default class TapAnimator extends MovableScreenObject {
 
     const shape = this.shapes.get(this.viewingLevel)!;
     shape.config.position = this.coor;
-    shape.update(time);
+    shape.update();
   }
 
   public display(ctx: CanvasRenderingContext2D): void {

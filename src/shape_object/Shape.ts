@@ -14,15 +14,12 @@ export interface IShapeProperties {
   thick: number;
 
   style: string;
-
-  is_movable: boolean;
 }
 
-abstract class Shape extends ScreenObject implements MovableScreenObject {
+export default abstract class Shape extends ScreenObject implements MovableScreenObject {
   private static _shapeID = 0;
   protected path2D: Path2D;
   protected pathDimension: IArea;
-  public is_hidden: boolean;
 
   constructor(public config: IShapeProperties) {
     super();
@@ -34,8 +31,6 @@ abstract class Shape extends ScreenObject implements MovableScreenObject {
     };
 
     this.path2D = new Path2D();
-
-    this.is_hidden = false;
   }
 
   public get shapeID() {
@@ -67,10 +62,15 @@ abstract class Shape extends ScreenObject implements MovableScreenObject {
     else ctx.stroke();
   }
 
-  public abstract update(time: number): void;
+  public update(): void {
+    const { velocity, position } = this.config;
+
+    if (velocity.rot !== void 0) this.config.rotation += velocity.rot;
+
+    position.x += velocity.x;
+    position.y += velocity.y;
+  }
+
   public abstract display(ctx: CanvasRenderingContext2D): void;
   public abstract init(): void;
 }
-
-export type IUninitShape = new (config: IShapeProperties) => Shape;
-export default Shape;
