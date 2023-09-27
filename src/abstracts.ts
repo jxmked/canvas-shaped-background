@@ -1,5 +1,3 @@
-import TapAnimator from './tap-animator';
-
 export abstract class ScreenObject {
   private _is_visible: boolean;
 

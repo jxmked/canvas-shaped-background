@@ -68,7 +68,7 @@ const tapCtx = tapCanvas.getContext('2d')!;
 
 const translate = new AdjustedCoor(tapCanvas);
 
-const activeTapinator: ReturnType<typeof TapAnimator>[] = [];
+const activeTapinator: TapAnimator[] = [];
 const activeKeys: number[] = [];
 
 function touchStart(evt: TouchEvent) {
@@ -78,7 +78,7 @@ function touchStart(evt: TouchEvent) {
     // Skip registered ID
     if (identifier in activeKeys) continue;
 
-    const ta = TapAnimator(identifier, performance.now());
+    const ta = new TapAnimator(identifier);
 
     ta.down({
       x: translate.x(clientX),

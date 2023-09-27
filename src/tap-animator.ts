@@ -8,107 +8,130 @@
 import * as ShapeArray from './shape_object/index';
 import { getRandomItem, flipper, random as genRand } from './utils';
 import { randomColors } from './constants';
+import { MovableScreenObject } from './abstracts';
+import Shape, { IShapeProperties } from './shape_object/shape';
 
 const shapes = Object.values(ShapeArray);
 
-export default (identifier: number, _down_time: number) => {
-  const Shapey = getRandomItem(shapes);
+export default class TapAnimator extends MovableScreenObject {
+  private coor: ICoordinates;
+  private is_down: boolean;
+  private is_to_be_kill: boolean;
+  private lift_up_time: number;
+  private _kill_now: boolean;
 
-  class TapAnimator extends Shapey {
-    private coor: ICoordinates;
-    private is_down: boolean;
-    private is_to_be_kill: boolean;
-    private lift_up_time: number;
-    private _kill_now: boolean;
+  public static readonly kill_interval = 100; // ms
 
-    public static readonly kill_interval = 500; // ms
+  private readonly shapes: Map<number, Shape>;
 
-    constructor(
-      private identifier: number,
-      private _down_time: number
-    ) {
-      const config = {
-        rotation: 0,
-        velocity: {
-          x: 0,
-          y: 0,
-          rot: flipper(500) * genRand()
-        },
-        color: getRandomItem(randomColors),
-        scale: 1,
-        is_solid: Math.random() > 0.5,
-        thick: 5,
-        style: Math.random() > 0.5 ? 'stroke' : 'fill',
-        position: {
-          x: -100,
-          y: -100
-        },
-        is_movable: true
-      };
+  // User press and hold: viewing level 1
+  // user releases: viewing level 2, after ms pass: 3
+  private viewingLevel: number;
 
-      super(config);
+  constructor(private identifier: number) {
+    super();
+    this.shapes = new Map();
 
-      this.coor = { x: 0, y: 0 };
-      this.is_down = true;
-      this.is_to_be_kill = false;
-      this._kill_now = false;
-      this.lift_up_time = 0;
-    }
+    this.coor = { x: 0, y: 0 };
+    this.is_down = true;
+    this.is_to_be_kill = false;
+    this._kill_now = false;
+    this.lift_up_time = 0;
 
-    public get kill_now() {
-      return this._kill_now;
-    }
+    this.viewingLevel = 1;
 
-    public get to_be_kill() {
-      return this.is_to_be_kill;
-    }
+    this.shapes.set(1, this.getRandomShape(1)); // Level 1
+    this.shapes.set(2, this.getRandomShape(0.8)); // Level 2
+    this.shapes.set(3, this.getRandomShape(1.6)); // Level 3
+  }
 
-    public get id() {
-      return this.identifier;
-    }
+  private getRandomShape(scale: number): Shape {
+    const Shapey = getRandomItem(shapes);
+    const config: IShapeProperties = {
+      rotation: 0,
+      velocity: {
+        x: 0,
+        y: 0,
+        rot: flipper(400) * genRand()
+      },
+      color: getRandomItem(randomColors),
+      is_solid: Math.random() > 0.5,
+      thick: 5,
+      style: Math.random() > 0.5 ? 'stroke' : 'fill',
+      position: this.coor,
+      is_movable: true,
+      scale
+    };
 
-    public get position() {
-      return Object.assign({}, this.coor);
-    }
+    return new Shapey(config);
+  }
 
-    public move({ x, y }: ICoordinates): void {
-      this.coor = { x, y };
-      super.move(this.coor);
-    }
+  public get kill_now() {
+    return this._kill_now;
+  }
 
-    public up(): void {
-      if (!this.is_down) return;
+  public get to_be_kill() {
+    return this.is_to_be_kill;
+  }
 
-      this.is_down = false;
-      this.is_to_be_kill = true;
-    }
+  public get id() {
+    return this.identifier;
+  }
 
-    public down({ x, y }: ICoordinates): void {
-      this.coor = { x, y };
-    }
+  public get position() {
+    return Object.assign({}, this.coor);
+  }
 
-    public init(): void {
-      super.init();
-    }
+  public move({ x, y }: ICoordinates): void {
+    this.coor = { x, y };
+  }
 
-    public update(time: number = 0): void {
-      if (!this.is_down && this.is_to_be_kill && this.lift_up_time === 0) {
-        this.lift_up_time = time;
-      }
+  public up(): void {
+    if (!this.is_down) return;
 
-      if (this.is_to_be_kill && this.lift_up_time + TapAnimator.kill_interval <= time) {
-        this._kill_now = true;
-      }
+    this.is_down = false;
+    this.is_to_be_kill = true;
+  }
 
-      super.update(time);
-    }
+  public down({ x, y }: ICoordinates): void {
+    this.coor = { x, y };
+  }
 
-    public display(ctx: CanvasRenderingContext2D): void {
-      if (!this.is_down) return;
-
-      super.display(ctx);
+  public init(): void {
+    for (const shape of this.shapes.values()) {
+      shape.init();
     }
   }
 
-  return new TapAnimator(identifier, _down_time);
-};
+  public update(time: number): void {
+    if (this.is_to_be_kill) {
+      if (!this.is_down && this.lift_up_time === 0) {
+        this.lift_up_time = time;
+        this.viewingLevel = 2;
+      }
+
+      if (TapAnimator.kill_interval * 0.5 + this.lift_up_time <= time) {
+        this.viewingLevel = 3;
+      }
+
+      if (this.lift_up_time + TapAnimator.kill_interval <= time) {
+        this._kill_now = true;
+      }
+    }
+
+    for (const shape of this.shapes.values()) {
+      shape.config.position = this.coor;
+      shape.update(time);
+    }
+  }
+
+  public display(ctx: CanvasRenderingContext2D): void {
+    try {
+      const shapeInstance = this.shapes.get(this.viewingLevel)!;
+
+      shapeInstance.display(ctx);
+    } catch (err) {
+      console.error("Shape doesn't exists");
+    }
+  }
+}

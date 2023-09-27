@@ -2,9 +2,9 @@ export default class {
   private rect: DOMRect;
   private factor: number;
 
-  constructor(private canvas: HTMLCanvasElement) {
-    this.rect = this.canvas.getBoundingClientRect();
-    this.factor = this.canvas.width / this.rect.width;
+  constructor(canvas: HTMLCanvasElement) {
+    this.rect = canvas.getBoundingClientRect();
+    this.factor = canvas.width / this.rect.width;
   }
 
   public x(x: number): number {
