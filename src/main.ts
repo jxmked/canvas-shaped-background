@@ -5,6 +5,15 @@ import { flipNum } from './utils';
 export type IShapeCollided = (side: number) => void;
 export type IExtendedAnimation = (ctx: CanvasRenderingContext2D) => void;
 
+export const enum bit_collide {
+  TOP = 0b1000,
+  RIGHT = 0b0100,
+  BOTTOM = 0b0010,
+  LEFT = 0b0001,
+  TOP_BOTTOM = 0b1010,
+  LEFT_RIGHT = 0b0101
+}
+
 export default class Main {
   private ctx: CanvasRenderingContext2D;
 
@@ -33,17 +42,11 @@ export default class Main {
 
     let sides: number = 0;
 
-    /**
-     * 0b1000 = top
-     * 0b0100 = right
-     * 0b0010 = bottom
-     * 0b0001 = left
-     * */
-    if (position.y - l_height <= Main.wallAdjustment) sides |= 0b1000;
-    else if (position.y + l_height >= height) sides |= 0b0010;
+    if (position.y - l_height <= Main.wallAdjustment) sides |= bit_collide.TOP;
+    else if (position.y + l_height >= height) sides |= bit_collide.BOTTOM;
 
-    if (position.x - l_width <= Main.wallAdjustment) sides |= 0b0001;
-    else if (position.x + l_width >= width) sides |= 0b0100;
+    if (position.x - l_width <= Main.wallAdjustment) sides |= bit_collide.LEFT;
+    else if (position.x + l_width >= width) sides |= bit_collide.RIGHT;
 
     if (sides > 0) {
       collidedCallback(sides);
@@ -79,12 +82,12 @@ export default class Main {
         const { position, velocity, scale } = layer.config;
         const area = layer.area;
         // top and bottom
-        if ((sides & 0b1010) > 0) {
+        if ((sides & bit_collide.TOP_BOTTOM) > 0) {
           velocity.y = flipNum(velocity.y);
 
           position.y = height;
 
-          if ((sides & 0b1000) > 0) {
+          if ((sides & bit_collide.TOP) > 0) {
             position.y = area.h * scale + Main.wallAdjustment;
           }
 
@@ -92,12 +95,12 @@ export default class Main {
         }
 
         // left and right
-        if ((sides & 0b0101) > 0) {
+        if ((sides & bit_collide.LEFT_RIGHT) > 0) {
           velocity.x = flipNum(velocity.x);
 
           position.x = width;
 
-          if ((sides & 0b0001) > 0) {
+          if ((sides & bit_collide.LEFT) > 0) {
             position.x = area.w * scale + Main.wallAdjustment;
           }
 

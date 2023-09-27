@@ -71,6 +71,18 @@ export default abstract class Shape extends ScreenObject implements MovableScree
     position.y += velocity.y;
   }
 
-  public abstract display(ctx: CanvasRenderingContext2D): void;
+  public display(ctx: CanvasRenderingContext2D): void {
+    const { position, scale, rotation } = this.config;
+
+    ctx.save();
+    ctx.translate(position.x, position.y);
+    ctx.scale(scale, scale);
+    ctx.rotate(rotation);
+    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
+    this.applyStyle(ctx, true);
+
+    ctx.restore();
+  }
+  
   public abstract init(): void;
 }

@@ -15,17 +15,4 @@ export default class Square extends Shape {
 
     ctx.closePath();
   }
-
-  public display(ctx: CanvasRenderingContext2D): void {
-    const { position, scale, rotation } = this.config;
-
-    ctx.save();
-    ctx.translate(position.x, position.y);
-    ctx.scale(scale, scale);
-    ctx.rotate(rotation);
-    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
-    this.applyStyle(ctx, true);
-
-    ctx.restore();
-  }
 }

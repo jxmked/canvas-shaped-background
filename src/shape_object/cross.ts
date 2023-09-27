@@ -21,17 +21,4 @@ export default class Cross extends Shape {
     ctx.lineTo(w * 0.6, 0);
     ctx.closePath();
   }
-
-  public display(ctx: CanvasRenderingContext2D): void {
-    const { position, scale, rotation } = this.config;
-
-    ctx.save();
-    ctx.translate(position.x, position.y);
-    ctx.scale(scale, scale);
-    ctx.rotate(rotation);
-    ctx.translate(-(this.pathDimension.w / 2), -(this.pathDimension.h / 2));
-    this.applyStyle(ctx, true);
-
-    ctx.restore();
-  }
 }
