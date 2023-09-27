@@ -9,19 +9,22 @@ import { randomColors } from './constants';
 
 const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
 const tapCanvas = document.querySelector('#overlayed-canvas') as HTMLCanvasElement;
-
+const translate = new AdjustedCoor(tapCanvas);
 const main = new MainObject(canvas);
 const shapes = Object.values(ShapeArray);
+main.start();
+
+const shapeCount = Math.abs(Math.floor(Math.sqrt(canvas.width * canvas.height) / 39));
+
+windowResize();
+
+function windowResize(): void {
+  tapCanvas.width = canvas.width;
+  tapCanvas.height = canvas.height;
+  translate.resize();
+}
 
 let i = 0;
-
-main.start();
-const { width, height } = canvas; // Must be after calling Main.start method
-
-tapCanvas.width = width;
-tapCanvas.height = height;
-
-const shapeCount = Math.abs(Math.floor(Math.sqrt(width * height) / 39));
 
 function insert() {
   i++;
@@ -30,8 +33,8 @@ function insert() {
   const config = {
     rotation: 0,
     velocity: {
-      x: flipper(width * genRand()),
-      y: flipper(height * genRand()),
+      x: flipper(canvas.width * genRand()),
+      y: flipper(canvas.height * genRand()),
       rot: flipper(100) * genRand()
     },
     color: getRandomItem(randomColors),
@@ -40,8 +43,8 @@ function insert() {
     thick: 5,
     style: Math.random() > 0.5 ? 'stroke' : 'fill',
     position: {
-      x: getRandomInRange(0, width),
-      y: getRandomInRange(0, height)
+      x: getRandomInRange(0, canvas.width),
+      y: getRandomInRange(0, canvas.height)
     },
     is_movable: false
   };
@@ -65,9 +68,6 @@ console.log(`Viewing ${shapeCount} moving items.`);
  * */
 
 const tapCtx = tapCanvas.getContext('2d')!;
-
-const translate = new AdjustedCoor(tapCanvas);
-
 const activeTapinator: TapAnimator[] = [];
 const activeKeys: number[] = [];
 
@@ -76,7 +76,7 @@ function touchStart(evt: TouchEvent) {
 
   for (const { identifier, clientX, clientY } of Array.from(evt.touches)) {
     // Skip registered ID
-    if (identifier in activeKeys) continue;
+    if (activeKeys.indexOf(identifier) !== -1) continue;
 
     const ta = new TapAnimator(identifier);
 
@@ -130,16 +130,17 @@ tapCanvas.addEventListener('touchmove', touchMove);
 tapCanvas.addEventListener('touchend', touchEnd);
 
 // Animate events
-
 main.afterLayersAnimation((ctx) => {
-  const time = performance.now();
   tapCtx.clearRect(0, 0, canvas.width, canvas.height);
   tapCtx.imageSmoothingEnabled = false;
-  // We will rendering it into other context.
+
+  const time = performance.now();
 
   for (const index in activeTapinator) {
     const ta = activeTapinator[index];
 
+    // If the TapAnimator is to be kill
+    // just kill it and never ti rerender it
     if (ta.kill_now) {
       activeTapinator.splice(Number(index), 1);
       continue;
@@ -149,3 +150,9 @@ main.afterLayersAnimation((ctx) => {
     ta.display(tapCtx);
   }
 });
+
+/**
+ * Window Events
+ * */
+
+window.addEventListener('resize', windowResize);

@@ -40,7 +40,7 @@ export default class TapAnimator extends MovableScreenObject {
 
     this.viewingLevel = 1;
 
-    this.shapes.set(1, this.getRandomShape(1)); // Level 1
+    this.shapes.set(1, this.getRandomShape(1.2)); // Level 1
     this.shapes.set(2, this.getRandomShape(0.8)); // Level 2
     this.shapes.set(3, this.getRandomShape(1.6)); // Level 3
   }
@@ -76,10 +76,6 @@ export default class TapAnimator extends MovableScreenObject {
 
   public get id() {
     return this.identifier;
-  }
-
-  public get position() {
-    return Object.assign({}, this.coor);
   }
 
   public move({ x, y }: ICoordinates): void {
@@ -119,10 +115,9 @@ export default class TapAnimator extends MovableScreenObject {
       }
     }
 
-    for (const shape of this.shapes.values()) {
-      shape.config.position = this.coor;
-      shape.update(time);
-    }
+    const shape = this.shapes.get(this.viewingLevel)!;
+    shape.config.position = this.coor;
+    shape.update(time);
   }
 
   public display(ctx: CanvasRenderingContext2D): void {
