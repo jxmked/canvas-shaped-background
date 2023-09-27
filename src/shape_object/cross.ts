@@ -3,7 +3,7 @@ import Shape from './shape';
 export default class Cross extends Shape {
   public init(): void {
     const ctx = this.path2D;
-    let { w, h } = this.pathDimension;
+    const { w, h } = this.pathDimension;
     //    w *= this.config.scale;
     //  h *= this.config.scale;
 
@@ -22,7 +22,7 @@ export default class Cross extends Shape {
     ctx.closePath();
   }
 
-  public update(time: number = 0): void {
+  public update(): void {
     const { velocity, position, is_movable } = this.config;
 
     if (velocity.rot !== void 0) this.config.rotation += velocity.rot;

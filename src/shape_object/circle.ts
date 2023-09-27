@@ -13,7 +13,7 @@ export default class Circle extends Shape {
     );
   }
 
-  public update(time: number = 0): void {
+  public update(): void {
     const { velocity, position, is_movable } = this.config;
 
     if (velocity.rot !== void 0) this.config.rotation += velocity.rot;

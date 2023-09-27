@@ -19,7 +19,7 @@ export interface IShapeProperties {
 }
 
 abstract class Shape extends ScreenObject implements MovableScreenObject {
-  private static _shapeID: number = 0;
+  private static _shapeID = 0;
   protected path2D: Path2D;
   protected pathDimension: IArea;
   public is_hidden: boolean;

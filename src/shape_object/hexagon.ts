@@ -5,14 +5,18 @@ export default class Hexagon extends Shape {
   public init(): void {
     const ctx = this.path2D;
 
-    for (const point of Polygonator(6, this.pathDimension)) {
-      (point.index === 0 ? ctx.moveTo : ctx.lineTo).call(ctx, point.x, point.y);
+    for (const point of Polygonator(3, this.pathDimension)) {
+      if (point.index === 0) {
+        ctx.moveTo(point.x, point.y);
+      } else {
+        ctx.lineTo(point.x, point.y);
+      }
     }
 
     ctx.closePath();
   }
 
-  public update(time: number = 0): void {
+  public update(): void {
     const { velocity, position } = this.config;
 
     position.x += velocity.x;
