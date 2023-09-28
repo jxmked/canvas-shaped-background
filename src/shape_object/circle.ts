@@ -12,7 +12,7 @@ export default class Circle extends Shape {
       2 * Math.PI
     );
   }
-  
+
   // @override
   public display(ctx: CanvasRenderingContext2D): void {
     const { position, scale, rotation } = this.config;

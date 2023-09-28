@@ -83,6 +83,6 @@ export default abstract class Shape extends ScreenObject implements MovableScree
 
     ctx.restore();
   }
-  
+
   public abstract init(): void;
 }

@@ -2,7 +2,6 @@ import raf from 'raf';
 import Shape from './shape_object/shape';
 import { flipNum } from './utils';
 
-export type IShapeCollided = (side: number) => void;
 export type IExtendedAnimation = (ctx: CanvasRenderingContext2D) => void;
 
 export const enum bit_collide {
@@ -34,7 +33,7 @@ export default class Main {
     this.afterExtendedAnim = (ctx: CanvasRenderingContext2D) => {};
   }
 
-  private wallCollisionChecker(layer: Shape, collidedCallback: IShapeCollided): void {
+  private wallCollisionChecker(layer: Shape): number {
     const { width, height } = this.canvas;
     const { position, scale } = layer.config;
     const l_width = (layer.area.w * scale) / 2;
@@ -42,15 +41,19 @@ export default class Main {
 
     let sides: number = 0;
 
-    if (position.y - l_height <= Main.wallAdjustment) sides |= bit_collide.TOP;
-    else if (position.y + l_height >= height) sides |= bit_collide.BOTTOM;
-
-    if (position.x - l_width <= Main.wallAdjustment) sides |= bit_collide.LEFT;
-    else if (position.x + l_width >= width) sides |= bit_collide.RIGHT;
-
-    if (sides > 0) {
-      collidedCallback(sides);
+    if (position.y - l_height <= Main.wallAdjustment) {
+      sides |= bit_collide.TOP;
+    } else if (position.y + l_height >= height - Main.wallAdjustment) {
+      sides |= bit_collide.BOTTOM;
     }
+
+    if (position.x - l_width <= Main.wallAdjustment) {
+      sides |= bit_collide.LEFT;
+    } else if (position.x + l_width >= width - Main.wallAdjustment) {
+      sides |= bit_collide.RIGHT;
+    }
+
+    return sides;
   }
 
   private init(): void {
@@ -76,38 +79,45 @@ export default class Main {
     this.beforeExtendedAnim.call(this.beforeExtendedAnim, this.ctx);
 
     for (const [_, layer] of this.layers) {
+      const sides = this.wallCollisionChecker(layer);
+      if (sides === 0) {
+        layer.update();
+        layer.display(this.ctx);
+        continue;
+      }
+
+      const {
+        config: { position, velocity, scale }
+      } = layer;
+      const { area } = layer;
+
+      // top and bottom
+      if ((sides & bit_collide.TOP_BOTTOM) > 0) {
+        velocity.y = flipNum(velocity.y);
+
+        position.y = height - Main.wallAdjustment;
+
+        if ((sides & bit_collide.TOP) > 0) {
+          position.y = area.h * scale + Main.wallAdjustment;
+        }
+
+        position.y -= (area.h * scale) / 2;
+      }
+
+      // left and right
+      if ((sides & bit_collide.LEFT_RIGHT) > 0) {
+        velocity.x = flipNum(velocity.x);
+
+        position.x = width - Main.wallAdjustment;
+
+        if ((sides & bit_collide.LEFT) > 0) {
+          position.x = area.w * scale + Main.wallAdjustment;
+        }
+
+        position.x -= (area.w * scale) / 2;
+      }
+
       layer.update();
-
-      this.wallCollisionChecker(layer, (sides) => {
-        const { position, velocity, scale } = layer.config;
-        const area = layer.area;
-        // top and bottom
-        if ((sides & bit_collide.TOP_BOTTOM) > 0) {
-          velocity.y = flipNum(velocity.y);
-
-          position.y = height;
-
-          if ((sides & bit_collide.TOP) > 0) {
-            position.y = area.h * scale + Main.wallAdjustment;
-          }
-
-          position.y -= (area.h * scale) / 2;
-        }
-
-        // left and right
-        if ((sides & bit_collide.LEFT_RIGHT) > 0) {
-          velocity.x = flipNum(velocity.x);
-
-          position.x = width;
-
-          if ((sides & bit_collide.LEFT) > 0) {
-            position.x = area.w * scale + Main.wallAdjustment;
-          }
-
-          position.x -= (area.w * scale) / 2;
-        }
-      });
-
       layer.display(this.ctx);
     }
 

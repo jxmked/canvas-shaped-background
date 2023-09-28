@@ -20,7 +20,7 @@ export default class TapAnimator extends MovableScreenObject {
   private lift_up_time: number;
   private _kill_now: boolean;
 
-  public static readonly kill_interval = 100; // ms
+  public static readonly kill_interval = 500; // ms
 
   private readonly shapes: Map<number, Shape>;
 
