@@ -1,6 +1,7 @@
 import raf from 'raf';
 import Shape from './shape_object/shape';
 import { flipNum } from './utils';
+import { WALL_ADJUSTMENT } from './constants';
 
 export type IExtendedAnimation = (ctx: CanvasRenderingContext2D) => void;
 
@@ -18,7 +19,6 @@ export default class Main {
 
   private layers: Map<string, Shape>;
   private initializedLayers: string[];
-  private static wallAdjustment = -80;
   private beforeExtendedAnim: IExtendedAnimation;
   private afterExtendedAnim: IExtendedAnimation;
 
@@ -41,15 +41,15 @@ export default class Main {
 
     let sides: number = 0;
 
-    if (position.y - l_height <= Main.wallAdjustment) {
+    if (position.y - l_height <= WALL_ADJUSTMENT) {
       sides |= bit_collide.TOP;
-    } else if (position.y + l_height >= height - Main.wallAdjustment) {
+    } else if (position.y + l_height >= height - WALL_ADJUSTMENT) {
       sides |= bit_collide.BOTTOM;
     }
 
-    if (position.x - l_width <= Main.wallAdjustment) {
+    if (position.x - l_width <= WALL_ADJUSTMENT) {
       sides |= bit_collide.LEFT;
-    } else if (position.x + l_width >= width - Main.wallAdjustment) {
+    } else if (position.x + l_width >= width - WALL_ADJUSTMENT) {
       sides |= bit_collide.RIGHT;
     }
 
@@ -95,10 +95,10 @@ export default class Main {
       if ((sides & bit_collide.TOP_BOTTOM) > 0) {
         velocity.y = flipNum(velocity.y);
 
-        position.y = height - Main.wallAdjustment;
+        position.y = height - WALL_ADJUSTMENT;
 
         if ((sides & bit_collide.TOP) > 0) {
-          position.y = area.h * scale + Main.wallAdjustment;
+          position.y = area.h * scale + WALL_ADJUSTMENT;
         }
 
         position.y -= (area.h * scale) / 2;
@@ -108,10 +108,10 @@ export default class Main {
       if ((sides & bit_collide.LEFT_RIGHT) > 0) {
         velocity.x = flipNum(velocity.x);
 
-        position.x = width - Main.wallAdjustment;
+        position.x = width - WALL_ADJUSTMENT;
 
         if ((sides & bit_collide.LEFT) > 0) {
-          position.x = area.w * scale + Main.wallAdjustment;
+          position.x = area.w * scale + WALL_ADJUSTMENT;
         }
 
         position.x -= (area.w * scale) / 2;

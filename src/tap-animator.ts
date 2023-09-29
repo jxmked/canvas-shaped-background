@@ -7,7 +7,7 @@
  * */
 import * as ShapeArray from './shape_object/index';
 import { getRandomItem, flipper, random as genRand } from './utils';
-import { randomColors } from './constants';
+import { randomColors, KILL_INTERVAL, TAP_ANIMATION_SCALE_LEVEL } from './constants';
 import { MovableScreenObject } from './abstracts';
 import Shape, { IShapeProperties } from './shape_object/shape';
 
@@ -19,8 +19,6 @@ export default class TapAnimator extends MovableScreenObject {
   private is_to_be_kill: boolean;
   private lift_up_time: number;
   private _kill_now: boolean;
-
-  public static readonly kill_interval = 500; // ms
 
   private readonly shapes: Map<number, Shape>;
 
@@ -40,9 +38,9 @@ export default class TapAnimator extends MovableScreenObject {
 
     this.viewingLevel = 1;
 
-    this.shapes.set(1, this.getRandomShape(1.2)); // Level 1
-    this.shapes.set(2, this.getRandomShape(0.8)); // Level 2
-    this.shapes.set(3, this.getRandomShape(1.6)); // Level 3
+    this.shapes.set(1, this.getRandomShape(TAP_ANIMATION_SCALE_LEVEL[0])); // Level 1
+    this.shapes.set(2, this.getRandomShape(TAP_ANIMATION_SCALE_LEVEL[1])); // Level 2
+    this.shapes.set(3, this.getRandomShape(TAP_ANIMATION_SCALE_LEVEL[2])); // Level 3
   }
 
   private getRandomShape(scale: number): Shape {
@@ -105,11 +103,11 @@ export default class TapAnimator extends MovableScreenObject {
         this.viewingLevel = 2;
       }
 
-      if (TapAnimator.kill_interval * 0.5 + this.lift_up_time <= time) {
+      if (KILL_INTERVAL * 0.5 + this.lift_up_time <= time) {
         this.viewingLevel = 3;
       }
 
-      if (this.lift_up_time + TapAnimator.kill_interval <= time) {
+      if (this.lift_up_time + KILL_INTERVAL <= time) {
         this._kill_now = true;
       }
     }
