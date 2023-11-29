@@ -1,6 +1,8 @@
 {
   "main.css": "canvas-shaped-background/main.6be5f58612d828926d17.css",
-  "main.js": "canvas-shaped-background/main.ee1ef861e4e6de609641.js",
+  "main.js": "canvas-shaped-background/main.3d973de23d1f4f8f7c8b.js",
   "favicon.ico": "canvas-shaped-background/favicon.ico",
-  "index.html": "canvas-shaped-background/index.html"
+  "workbox-0858eadd.js": "canvas-shaped-background/workbox-0858eadd.js",
+  "index.html": "canvas-shaped-background/index.html",
+  "service-worker.js": "canvas-shaped-background/service-worker.js"
 }
