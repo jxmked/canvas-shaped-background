@@ -9,7 +9,7 @@ const package = require('./package.json');
 const webpack = require('webpack');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 var devMode = process.env['NODE' + '_ENV'] !== 'production';
 const CONFIG = {
@@ -75,10 +75,18 @@ let prodPlugins = [
     inject: true, // Insert html tag <link rel="manifest" ... />
     filename: 'site.webmanifest'
   }),
+  
   new WebpackManifestPlugin({
     basePath: '',
     publicPath: 'canvas-shaped-background/',
     fileName: 'asset-manifest.json'
+  }),
+  
+  new WorkboxPlugin.GenerateSW({
+    // these options encourage the ServiceWorkers to get in there fast
+    // and not allow any straggling "old" SWs to hang around
+    clientsClaim: true,
+    skipWaiting: true,
   })
 ];
 

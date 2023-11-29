@@ -2,6 +2,9 @@ import raf from 'raf';
 import Shape from './shape_object/shape';
 import { flipNum } from './utils';
 import { WALL_ADJUSTMENT } from './constants';
+import SwOffline from './lib/workbox-work-offline';
+
+SwOffline();
 
 export type IExtendedAnimation = (ctx: CanvasRenderingContext2D) => void;
 
